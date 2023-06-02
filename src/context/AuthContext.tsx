@@ -1,8 +1,12 @@
-import { createContext, useContext, useState } from "react";
+"use client";
+
+import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "@/firebase/config";
+import type { User } from "firebase/auth";
 
 
-const AuthContext = createContext(null);
+
+const AuthContext = createContext<User|null>(null);
 
 export function useAuth() {
     return useContext(AuthContext);
@@ -10,10 +14,16 @@ export function useAuth() {
 
 export function AuthProvider({children} : {children: React.ReactNode}) {
 
-    const [user, setUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState<User|null>(null);
+
+    useEffect(() => {
+        auth.onAuthStateChanged(user => {
+            setCurrentUser(user);
+        });
+    }, [])
 
     return (
-        <AuthContext.Provider value={user}>
+        <AuthContext.Provider value={currentUser}>
             {children}
         </AuthContext.Provider>
     )
