@@ -4,25 +4,31 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "@/firebase/config";
 import { User, onIdTokenChanged } from "firebase/auth";
 
-
-
-
-const AuthContext = createContext<User|null>(null);
-
-export function useAuth() {
-    return useContext(AuthContext);
+interface UserInfo {
+  user?: User|null,
+  token?: string
+  setToken: any
 }
+
+const AuthContext = createContext<UserInfo|null>(null);
+
 
 export function AuthProvider({children} : {children: React.ReactNode}) {
 
     const [currentUser, setCurrentUser] = useState<User|null>(null);
+    const [token, setToken] = useState("");
+
+    const currentUserInfo: UserInfo = {
+      user: currentUser,
+      token: token,
+      setToken: setToken
+    } 
 
     useEffect(() => {
         const unsubscribe = onIdTokenChanged(auth, async (user) => {
-          if (user) {
-            setCurrentUser(user);
-          } else {
-            setCurrentUser(null);
+          setCurrentUser(user);
+          if(!user) {
+            setToken("");
           }
         });
      
@@ -30,8 +36,12 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
       }, []);
 
     return (
-        <AuthContext.Provider value={currentUser}>
+        <AuthContext.Provider value={currentUserInfo}>
             {children}
         </AuthContext.Provider>
     )
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
 }
