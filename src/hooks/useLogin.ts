@@ -17,6 +17,7 @@ export const useLogin = () => {
 
     try {
       const res = await signInWithPopup(auth, provider);
+      console.log(res);
       if (!res) {
         throw new Error("Could not complete signup");
       }

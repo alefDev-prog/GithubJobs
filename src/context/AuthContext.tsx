@@ -3,6 +3,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "@/firebase/config";
 import { User, onIdTokenChanged } from "firebase/auth";
+import { GithubAuthProvider } from "firebase/auth";
+import { useLogin } from "@/hooks/useLogin";
 
 interface UserInfo {
   user?: User|null,
@@ -27,10 +29,16 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
     useEffect(() => {
         const unsubscribe = onIdTokenChanged(auth, async (user) => {
           setCurrentUser(user);
+          console.log(user?.getIdToken());
+          
+          /*
           if(!user) {
             setToken("");
           }
+          */
         });
+
+        GithubAuthProvider.credential
      
         return unsubscribe;
       }, []);
