@@ -17,18 +17,18 @@ export enum ActionKinds {
     
 }
 
-interface Action {
+export interface Action {
     type: ActionKinds,
     payload: any
 }
 
-export const reducer = (state: any = initialValues, action: Action) => {
+export const employerReducer = (state: any = initialValues, action: Action) => {
     switch(action.type) {
         case "SET_CURRENT_REPO": 
-            return {...state, passwordMessage: action.payload}
+            return {...state, currentRepo: action.payload}
             break;
         case "SET_REPO_INFO":
-            return {...state, usernameMessage: action.payload}
+            return {...state, repoInfo: action.payload}
             break;
         
         default:

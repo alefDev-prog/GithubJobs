@@ -2,13 +2,14 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { Octokit } from "@octokit/rest";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, Key } from "react";
 import Repo from "./components/repo";
+import { employerReducer, ActionKinds, initialValues, Action } from "./components/reducer";
 
 export default function Employer() {
     const currentUser = useAuth();
-    const [repoInfo, setRepoInfo] = useState<any[]>([]);
-    const [currentRepo, setCurrentRepo] = useState<object>({});
+    const [values, dispatch] = useReducer<(state: employerReducer, action: Action) => any>(employerReducer, initialValues);
+
 
     useEffect(() => {
         console.log(currentUser?.token);
@@ -20,7 +21,7 @@ export default function Employer() {
         async function fetchRepositories() {
             const response = await octokit.repos.listForAuthenticatedUser({visibility:"all"});
             console.log(response.data);
-            setRepoInfo(response.data);
+            dispatch({type: ActionKinds.SET_REPO_INFO, payload: response.data});
         }
         fetchRepositories();
     }, []);
@@ -36,14 +37,14 @@ export default function Employer() {
                         <div className="card-header">
                             <h3 className="card-title">Your repositories</h3>
                         </div>
-                        <button onClick={() => console.log(currentRepo)}>check</button>
+                        <button onClick={() => console.log(values.currentRepo)}>check</button>
                         <div className="list-group" style={{maxHeight: "300px", overflowY:"scroll"}}>
 
-                            {repoInfo.map((obj, index): React.ReactNode => {
-                                return <Repo repository={obj} setCurrentRepo={setCurrentRepo} key={index}/>
+                            {values.repoInfo.map((obj: object, index: Key | null | undefined): React.ReactNode => {
+                                return <Repo repository={obj} setCurrentRepo={dispatch} key={index}/>
                             })}
                         </div>
-                    </div>
+                    </div>  
                 </div>
 
                 {/* Adding description of job for repo */}
