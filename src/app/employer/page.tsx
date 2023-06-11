@@ -49,6 +49,7 @@ export default function Employer() {
 
                 {/* Adding description of job for repo */}
                 <div className="col">
+                    <h2>Repository: <a href={values.currentRepo.html_url} target="_blank">{values.currentRepo.name}</a></h2>
                     <form>
                         <div className="form-group">
                             <label htmlFor="jobTitle">Job Title</label>
@@ -75,7 +76,7 @@ export default function Employer() {
                                 <div className="input-group-prepend">
                                     <div className="input-group-text">$</div>
                                 </div>
-                                <input type="number" className="form-control" id="jobSalary" placeholder="Enter job salary" />
+                                <input type="number" className="form-control" id="jobSalary" placeholder="Enter job salary" min={0}/>
                             </div>
                         </div>
                         <div className="form-group">
