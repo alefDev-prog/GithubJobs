@@ -1,12 +1,12 @@
 "use client";
 
-import { Firestore, addDoc, collection } from "firebase/firestore";
+import { QuerySnapshot, addDoc, collection, getDoc, getDocs, queryEqual } from "firebase/firestore";
 import { employerReducer } from "./reducer";
 import { FormEvent, useRef } from "react";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/AuthContext";
-import { firestore } from "firebase-admin";
 import { repoInfo } from "@/interfaces/interface";
+import { firestore } from "firebase-admin";
 
 export default function JobForm({values}: {values: employerReducer}) {
     const title = useRef<HTMLInputElement|null>(null);
@@ -16,6 +16,7 @@ export default function JobForm({values}: {values: employerReducer}) {
     const salary = useRef<HTMLInputElement|null>(null);
 
     const jobCollection = collection(db, "jobs");
+    const userCollection = collection(db, "users");
     
     const currentUser = useAuth();
 
@@ -36,12 +37,9 @@ export default function JobForm({values}: {values: employerReducer}) {
         }
 
 
-
         try {
-            if(title.current && description.current && payment.current && period.current && salary.current) {
-                await addDoc(jobCollection,
-                {
-                    
+            if (title.current && description.current && payment.current && period.current && salary.current) {
+                const jobOffering = {
                     title: title.current.value,
                     repository: doneRepo,
                     description: description.current.value,
@@ -50,8 +48,17 @@ export default function JobForm({values}: {values: employerReducer}) {
                     salary: salary.current.value,
                     publisher: currentUser?.user?.uid,
                     createdAt: timeStamp
-                    
+                }
+
+                await addDoc(jobCollection, jobOffering);
+
+                const userId = currentUser?.user?.uid;
+                const userDoc = await firestore().collection("users").where("userId", "==", userId).get()
+                .then((querySnapshot) => {
+                    console.log(querySnapshot);
                 });
+                
+            
             }
         } catch(error) {
             console.log(error);
