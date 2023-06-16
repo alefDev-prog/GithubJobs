@@ -1,6 +1,6 @@
 "use client";
 
-import { QuerySnapshot, addDoc, collection, getDoc, getDocs, queryEqual } from "firebase/firestore";
+import { addDoc, arrayUnion, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { employerReducer } from "./reducer";
 import { FormEvent, useRef } from "react";
 import { db } from "@/firebase/config";
@@ -23,8 +23,6 @@ export default function JobForm({values}: {values: employerReducer}) {
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        
-        
         
         const timeStamp = new Date();
         
@@ -53,10 +51,22 @@ export default function JobForm({values}: {values: employerReducer}) {
                 await addDoc(jobCollection, jobOffering);
 
                 const userId = currentUser?.user?.uid;
-                const userDoc = await firestore().collection("users").where("userId", "==", userId).get()
-                .then((querySnapshot) => {
-                    console.log(querySnapshot);
-                });
+                
+                if(userId){
+                    const docRef = doc(db, "users", userId);
+                    const docSnap = await getDoc(docRef);
+                    const subCollectionRef = collection(docRef, "job-offerings");
+
+                    if(docSnap.exists()) {
+                        console.log(docSnap.data());   
+                    }
+                    else {
+                        await setDoc(doc(userCollection, userId), {
+                            name: currentUser?.user?.displayName,
+                        });   
+                    }
+                        await setDoc(doc(subCollectionRef), jobOffering)
+                } 
                 
             
             }
@@ -66,9 +76,21 @@ export default function JobForm({values}: {values: employerReducer}) {
         
     }
 
+    async function testGet() {
+        const userId = currentUser?.user?.uid;
+        
+        if(userId){
+            const q = query(userCollection, where("user", "==", "ALLAN"));
+            const snap = await getDocs(q);
+            snap.forEach((document) => console.log(document.data()));
+        } 
+        
+    }
+
 
     return (
         <div className="col">
+            <button onClick={testGet}>Test</button>
             <h2>Repository: <a href={values.currentRepo.html_url} target="_blank">{values.currentRepo.name}</a></h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
