@@ -21,7 +21,6 @@ export default function Employer() {
         });
         async function fetchRepositories() {
             const response = await octokit.repos.listForAuthenticatedUser({visibility:"all"});
-            console.log(response.data);
             dispatch({type: ActionKinds.SET_REPO_INFO, payload: response.data});
         }
         fetchRepositories();

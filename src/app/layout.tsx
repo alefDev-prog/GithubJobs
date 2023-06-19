@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { AuthProvider } from '@/context/AuthContext';
+import Navbar from './components/navbar';
 
 export const metadata = {
   title: 'Github Jobs',
@@ -13,8 +14,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      
       <AuthProvider>
-        <body>{children}</body>
+        <body>
+          <Navbar />
+          {children}
+        </body>
       </AuthProvider>
     </html>
   )

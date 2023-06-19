@@ -3,13 +3,12 @@ import { auth } from "../firebase/config";
 import { use, useState } from "react";
 
 
-
 export const useLogin = () => {
   const [error, setError] = useState<null | string>(null);
   const [isPending, setIsPending] = useState(false);
   const [accessToken, setAccessToken] = useState<string | undefined>("");
   const provider = new GithubAuthProvider();
-  
+
 
   const login = async () => {
     setError(null);
