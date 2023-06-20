@@ -1,12 +1,11 @@
 "use client";
 
-import { addDoc, arrayUnion, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc,setDoc} from "firebase/firestore";
 import { employerReducer } from "./reducer";
 import { FormEvent, useRef } from "react";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/AuthContext";
 import { repoInfo } from "@/interfaces/interface";
-import { firestore } from "firebase-admin";
 
 export default function JobForm({values}: {values: employerReducer}) {
     const title = useRef<HTMLInputElement|null>(null);
@@ -15,7 +14,7 @@ export default function JobForm({values}: {values: employerReducer}) {
     const period = useRef<HTMLInputElement|null>(null);
     const salary = useRef<HTMLInputElement|null>(null);
 
-    const jobCollection = collection(db, "jobs");
+    
     const userCollection = collection(db, "users");
     
     const currentUser = useAuth();
@@ -48,14 +47,12 @@ export default function JobForm({values}: {values: employerReducer}) {
                     createdAt: timeStamp
                 }
 
-                await addDoc(jobCollection, jobOffering);
-
                 const userId = currentUser?.user?.uid;
-                
+
                 if(userId){
                     const docRef = doc(db, "users", userId);
                     const docSnap = await getDoc(docRef);
-                    const subCollectionRef = collection(docRef, "job-offerings");
+                    const subCollectionRef = collection(docRef, "userJobs");
 
                     if(docSnap.exists()) {
                         console.log(docSnap.data());   
@@ -76,21 +73,11 @@ export default function JobForm({values}: {values: employerReducer}) {
         
     }
 
-    async function testGet() {
-        const userId = currentUser?.user?.uid;
-        
-        if(userId){
-            const q = query(userCollection, where("user", "==", "ALLAN"));
-            const snap = await getDocs(q);
-            snap.forEach((document) => console.log(document.data()));
-        } 
-        
-    }
+
 
 
     return (
         <div className="col">
-            <button onClick={testGet}>Test</button>
             <h2>Repository: <a href={values.currentRepo.html_url} target="_blank">{values.currentRepo.name}</a></h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
