@@ -6,6 +6,7 @@ import { FormEvent, useRef } from "react";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/AuthContext";
 import { repoInfo } from "@/interfaces/interface";
+import { serverTimestamp } from "firebase/firestore";
 
 export default function JobForm({values}: {values: employerReducer}) {
     const title = useRef<HTMLInputElement|null>(null);
@@ -44,7 +45,7 @@ export default function JobForm({values}: {values: employerReducer}) {
                     period: period.current.value,
                     salary: salary.current.value,
                     publisher: currentUser?.user?.uid,
-                    createdAt: timeStamp
+                    createdAt: serverTimestamp()
                 }
 
                 const userId = currentUser?.user?.uid;

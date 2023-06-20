@@ -1,13 +1,13 @@
 "use client";
 
 import firebase_app, { db } from "@/firebase/config";
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import { firestore } from "firebase-admin";
-import { collection, collectionGroup, getDocs, limit, onSnapshot, orderBy, query, startAfter } from "firebase/firestore";
+import { Firestore, collection, collectionGroup, getDocs, limit, onSnapshot, orderBy, query, startAfter } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
+import { adminSDK } from "@/firebase/admin";
 
 export default function Explorer() {
     const [items, setItems] = useState<any[]>([]);
@@ -23,15 +23,16 @@ export default function Explorer() {
                 setLastItem(newItems[newItems.length - 1]);
             }
         );
+    
 
         return () => unsubscribe();
     }, []);
 
     async function fetchJobs() {
         try {
-            const jobCollection = collectionGroup(db, "userJobs");
-
-            const ordered = query(collectionGroup(db, "userJobs"), orderBy("createdAt"), limit(3));
+           
+            console.log(lastItem)
+            const ordered = query(collectionGroup(db, "userJobs"), orderBy("createdAt"), startAfter(lastItem ? lastItem : null), limit(4));
 
             const orderedDocs = await getDocs(ordered);
             const newItems = orderedDocs.docs.map((doc) => doc.data());
@@ -44,18 +45,14 @@ export default function Explorer() {
         }
     }
 
-    async function test() {
-        const res = query(collectionGroup(db, "userJobs"));
-        const querySnapshot = await getDocs(res);
-        querySnapshot.forEach((doc) => {
-            console.log(doc.id, ' => ', doc.data());
-});
-    }
+    
+    
 
     return (
         <>
-            <button onClick={test}>Test</button>
             <div>
+                <button onClick={fetchJobs}>Test</button>
+                <button onClick={() => console.log(lastItem)}>Last</button>
                 <InfiniteScroll
                     dataLength={items.length}
                     next={fetchJobs}
