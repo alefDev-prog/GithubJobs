@@ -5,6 +5,7 @@ import { auth } from "@/firebase/config";
 import { User, onIdTokenChanged } from "firebase/auth";
 import { GithubAuthProvider } from "firebase/auth";
 import { useLogin } from "@/hooks/useLogin";
+import Cookies from "js-cookie";
 
 interface UserInfo {
   user?: User|null,
@@ -30,12 +31,14 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
         const unsubscribe = onIdTokenChanged(auth, async (user) => {
           setCurrentUser(user);
 
-          
-          /*
-          if(!user) {
-            setToken("");
+          if(user) {
+            Cookies.set('tokenName', token, {expires: 10})
           }
-          */
+          else {
+            Cookies.remove('tokenName');
+          }
+
+
         });
 
         GithubAuthProvider.credential
