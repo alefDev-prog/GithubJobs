@@ -1,7 +1,10 @@
 "use client";
 
-import { db } from "@/firebase/config";
-import { collection, getDocs, limit, onSnapshot, orderBy, query, startAfter } from "firebase/firestore";
+import firebase_app, { db } from "@/firebase/config";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import { firestore } from "firebase-admin";
+import { collection, collectionGroup, getDocs, limit, onSnapshot, orderBy, query, startAfter } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -13,7 +16,7 @@ export default function Explorer() {
 
     useEffect(() => {
         const unsubscribe = onSnapshot(
-            query(collection(db, "jobs"), orderBy("createdAt"), limit(3)),
+            query(collectionGroup(db, "userJobs"), orderBy("createdAt"), limit(3)),
             (snapshot) => {
                 const newItems = snapshot.docs.map((doc) => doc.data());
                 setItems(newItems);
@@ -26,7 +29,7 @@ export default function Explorer() {
 
     async function fetchJobs() {
         try {
-            const jobCollection = collection(db, "jobs");
+            const jobCollection = collectionGroup(db, "userJobs");
 
             const ordered = query(
                 jobCollection,
@@ -46,9 +49,17 @@ export default function Explorer() {
         }
     }
 
+    async function test() {
+        const res = query(collectionGroup(db, "userJobs"));
+        const querySnapshot = await getDocs(res);
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, ' => ', doc.data());
+});
+    }
+
     return (
         <>
-            <button onClick={() => console.log(hasMore)}>Test</button>
+            <button onClick={test}>Test</button>
             <div>
                 <InfiniteScroll
                     dataLength={items.length}
