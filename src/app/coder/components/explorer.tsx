@@ -31,12 +31,7 @@ export default function Explorer() {
         try {
             const jobCollection = collectionGroup(db, "userJobs");
 
-            const ordered = query(
-                jobCollection,
-                orderBy("createdAt"),
-                startAfter(lastItem ? lastItem.createdAt : null),
-                limit(2)
-            );
+            const ordered = query(collectionGroup(db, "userJobs"), orderBy("createdAt"), limit(3));
 
             const orderedDocs = await getDocs(ordered);
             const newItems = orderedDocs.docs.map((doc) => doc.data());
