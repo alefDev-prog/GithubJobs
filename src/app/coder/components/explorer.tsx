@@ -6,13 +6,26 @@ import { Firestore, collection, collectionGroup, getDocs, limit, onSnapshot, ord
 import { useEffect, useState } from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
-import { adminSDK } from "@/firebase/admin";
+
 
 export default function Explorer() {
-    const [items, setItems] = useState<any[]>([1,1,1,1,1,1,1,1,1,1,1,1,1,11,1,1,1,1,1,11,1,1,1,1,1]);
+    const [items, setItems] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [lastItem, setLastItem] = useState<any>(null);
 
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(
+            query(collectionGroup(db, "userJobs"), orderBy("createdAt", "desc"), limit(20)),
+            (snapshot) => {
+                const newItems = snapshot.docs.map((doc) => doc.data());
+                setItems(newItems);
+                setLastItem(newItems.length > 0 ? newItems[newItems.length - 1] : null);
+            }
+        );
+    
+        return () => unsubscribe();
+    }, []);
 
     async function fetchJobs() {
         try {
@@ -31,15 +44,13 @@ export default function Explorer() {
                 limit(2));
             }
 
-
-
-
             const orderedDocs = await getDocs(ordered);
             const newItems = orderedDocs.docs.map((doc) => doc.data());
             console.log(newItems);
             setItems((prevItems) => [...prevItems, ...newItems]);
-            setLastItem(newItems.length > 0 ? newItems[newItems.length - 1] : null  );
+            setLastItem(newItems.length > 0 ? newItems[newItems.length - 1] : null);
             if (orderedDocs.docs.length < 2) setHasMore(false);
+
         } catch (error) {
             console.log(error);
         }
