@@ -2,7 +2,6 @@
 
 import firebase_app, { db } from "@/firebase/config";
 import 'firebase/firestore';
-import { firestore } from "firebase-admin";
 import { Firestore, collection, collectionGroup, getDocs, limit, onSnapshot, orderBy, query, startAfter } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
@@ -10,36 +9,37 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { adminSDK } from "@/firebase/admin";
 
 export default function Explorer() {
-    const [items, setItems] = useState<any[]>([]);
+    const [items, setItems] = useState<any[]>([1,1,1,1,1,1,1,1,1,1,1,1,1,11,1,1,1,1,1,11,1,1,1,1,1]);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [lastItem, setLastItem] = useState<any>(null);
 
-    useEffect(() => {
-        const unsubscribe = onSnapshot(
-            query(collectionGroup(db, "userJobs"), orderBy("createdAt"), limit(3)),
-            (snapshot) => {
-                const newItems = snapshot.docs.map((doc) => doc.data());
-                setItems(newItems);
-                setLastItem(newItems[newItems.length - 1]);
-            }
-        );
-    
-
-        return () => unsubscribe();
-    }, []);
 
     async function fetchJobs() {
         try {
-           
-            console.log(lastItem)
-            const ordered = query(collectionGroup(db, "userJobs"), orderBy("createdAt"), startAfter(lastItem ? lastItem : null), limit(4));
+            let ordered;
+
+            if(lastItem) {
+                console.log("here");
+                ordered = query(collectionGroup(db, "userJobs"),
+                orderBy("createdAt"),
+                startAfter(lastItem.createdAt),
+                limit(2));
+            }
+            else {
+                ordered = query(collectionGroup(db, "userJobs"),
+                orderBy("createdAt"),
+                limit(2));
+            }
+
+
+
 
             const orderedDocs = await getDocs(ordered);
             const newItems = orderedDocs.docs.map((doc) => doc.data());
+            console.log(newItems);
             setItems((prevItems) => [...prevItems, ...newItems]);
-            setLastItem(newItems[newItems.length - 1]);
-            if (orderedDocs.docs.length < 3) setHasMore(false);
-            orderedDocs.forEach((doc) => console.log(doc.data()));
+            setLastItem(newItems.length > 0 ? newItems[newItems.length - 1] : null  );
+            if (orderedDocs.docs.length < 2) setHasMore(false);
         } catch (error) {
             console.log(error);
         }
@@ -61,8 +61,8 @@ export default function Explorer() {
                     endMessage={<p>No more data to load.</p>}
                 >
                     <ul>
-                    {items.map(item => (
-                        <li key={item.createdAt}>{item.title}</li>
+                    {items.map((item, index) => (
+                        <li key={index}>{item.title}</li>
                     ))}
                     </ul>
                 </InfiniteScroll>
