@@ -12,6 +12,5 @@ if (!admin.apps.length) {
  });
 }
 
-admin.initializeApp();
 
 export const adminSDK = admin;

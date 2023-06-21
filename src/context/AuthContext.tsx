@@ -4,7 +4,6 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "@/firebase/config";
 import { User, onIdTokenChanged } from "firebase/auth";
 import { GithubAuthProvider } from "firebase/auth";
-import { useLogin } from "@/hooks/useLogin";
 import Cookies from "js-cookie";
 
 interface UserInfo {
@@ -32,10 +31,10 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
           setCurrentUser(user);
 
           if(user) {
-            Cookies.set('tokenName', token, {expires: 10})
+            Cookies.set('loggedIn', "loggedIn", {expires: 10})
           }
           else {
-            Cookies.remove('tokenName');
+            Cookies.remove('loggedIn');
           }
 
 
