@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import { Firestore, collection, collectionGroup, getDocs, limit, onSnapshot, orderBy, query, startAfter } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
+import JobItem from "./jobItem";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 
@@ -13,12 +14,13 @@ export default function Explorer() {
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [lastItem, setLastItem] = useState<any>(null);
 
-
+    
     useEffect(() => {
         const unsubscribe = onSnapshot(
-            query(collectionGroup(db, "userJobs"), orderBy("createdAt", "desc"), limit(20)),
+            query(collectionGroup(db, "userJobs"), orderBy("createdAt", "desc"), limit(10)),
             (snapshot) => {
                 const newItems = snapshot.docs.map((doc) => doc.data());
+                if(newItems.length < 20) setHasMore(false);
                 setItems(newItems);
                 setLastItem(newItems.length > 0 ? newItems[newItems.length - 1] : null);
             }
@@ -26,6 +28,7 @@ export default function Explorer() {
     
         return () => unsubscribe();
     }, []);
+    
 
     async function fetchJobs() {
         try {
@@ -61,7 +64,7 @@ export default function Explorer() {
 
     return (
         <>
-            <div>
+            <main className="container">
                 <button onClick={fetchJobs}>Test</button>
                 <button onClick={() => console.log(lastItem)}>Last</button>
                 <InfiniteScroll
@@ -71,14 +74,14 @@ export default function Explorer() {
                     loader={<p>Loading...</p>}
                     endMessage={<p>No more data to load.</p>}
                 >
-                    <ul>
+                    
                     {items.map((item, index) => (
-                        <li key={index}>{item.title}</li>
+                        <JobItem key={index} info={item}/>
                     ))}
-                    </ul>
+                    
                 </InfiniteScroll>
             
-            </div>
+            </main>
         </>
         
     )
