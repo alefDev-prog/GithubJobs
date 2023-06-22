@@ -20,6 +20,7 @@ export default function Login() {
     function handleLogout() {
         currentUser?.setToken("");
         logout();
+       
     }
     async function getData() {
         const credential = localStorage.getItem("GithubToken");
@@ -32,6 +33,7 @@ export default function Login() {
         login();
         if(currentUser?.user?.photoURL) Cookies.set("user-image", currentUser?.user?.photoURL);
         if(currentUser?.user?.displayName) Cookies.set("user-name", currentUser?.user?.displayName);
+        
     }
     
     
