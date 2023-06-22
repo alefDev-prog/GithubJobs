@@ -34,6 +34,12 @@ export default function JobForm({values}: {values: employerReducer}) {
             stargazers_count: values.currentRepo.stargazers_count
         }
 
+        const userInfo = {
+            name: currentUser?.user?.displayName,
+            image: currentUser?.user?.photoURL,
+            userId: currentUser?.user?.uid
+        }
+
 
         try {
             if (title.current && description.current && payment.current && period.current && salary.current) {
@@ -44,7 +50,7 @@ export default function JobForm({values}: {values: employerReducer}) {
                     payment: payment.current.value,
                     period: period.current.value,
                     salary: salary.current.value,
-                    publisher: currentUser?.user?.uid,
+                    publisher: userInfo,
                     createdAt: serverTimestamp()
                 }
 
