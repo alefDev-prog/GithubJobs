@@ -11,7 +11,11 @@ export interface jobInfo {
     description: string;
     payment: string;
     period: string;
-    publisher: string;
+    publisher: {
+        name: string,
+        image: string,
+        userId: string
+    };
     
     repository: {
         html_url: string;

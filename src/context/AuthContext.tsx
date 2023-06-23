@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "@/firebase/config";
-import { User, onIdTokenChanged } from "firebase/auth";
+import { User, onIdTokenChanged, onAuthStateChanged } from "firebase/auth";
 import { GithubAuthProvider } from "firebase/auth";
 import Cookies from "js-cookie";
 
@@ -27,11 +27,13 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
     } 
 
     useEffect(() => {
-        const unsubscribe = onIdTokenChanged(auth, async (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
           setCurrentUser(user);
-
+          console.log("Here")
           if(user) {
-            Cookies.set('loggedIn', "loggedIn", {expires: 10})
+            Cookies.set('loggedIn', "loggedIn", {expires: 10});
+            if(user?.photoURL) Cookies.set("user-image", user?.photoURL);
+            if(user?.displayName) Cookies.set("user-name", user?.displayName);
           }
           else {
             Cookies.remove('loggedIn');

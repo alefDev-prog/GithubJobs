@@ -17,9 +17,10 @@ export default function Login() {
 
     }, [accessToken])
 
-    function handleLogout() {
+    async function handleLogout() {
         currentUser?.setToken("");
-        logout();
+        await logout();
+        window.location.reload();
        
     }
     async function getData() {
@@ -29,10 +30,10 @@ export default function Login() {
         console.log(data);
     }
 
-    function handleLogin() {
-        login();
-        if(currentUser?.user?.photoURL) Cookies.set("user-image", currentUser?.user?.photoURL);
-        if(currentUser?.user?.displayName) Cookies.set("user-name", currentUser?.user?.displayName);
+    async function handleLogin() {
+        await login();
+        window.location.reload();
+        
         
     }
     
