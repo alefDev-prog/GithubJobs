@@ -43,16 +43,7 @@ export default function JobForm({values}: {values: employerReducer}) {
 
         try {
             if (title.current && description.current && payment.current && period.current && salary.current) {
-                const jobOffering = {
-                    title: title.current.value,
-                    repository: doneRepo,
-                    description: description.current.value,
-                    payment: payment.current.value,
-                    period: period.current.value,
-                    salary: salary.current.value,
-                    publisher: userInfo,
-                    createdAt: serverTimestamp()
-                }
+                
 
                 const userId = currentUser?.user?.uid;
 
@@ -64,12 +55,28 @@ export default function JobForm({values}: {values: employerReducer}) {
                     if(docSnap.exists()) {
                         console.log(docSnap.data());   
                     }
+
                     else {
                         await setDoc(doc(userCollection, userId), {
                             name: currentUser?.user?.displayName,
                         });   
                     }
-                        await setDoc(doc(subCollectionRef), jobOffering)
+                    
+
+                    const jobDoc = doc(subCollectionRef);
+                    const jobOffering = {
+                        title: title.current.value,
+                        repository: doneRepo,
+                        description: description.current.value,
+                        payment: payment.current.value,
+                        period: period.current.value,
+                        salary: salary.current.value,
+                        publisher: userInfo,
+                        createdAt: serverTimestamp(),
+                        id: jobDoc.id
+                        
+                    }
+                    await setDoc(jobDoc, jobOffering)
                 } 
                 
             

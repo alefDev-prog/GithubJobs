@@ -27,5 +27,6 @@ export interface jobInfo {
     
     salary: string;
     title: string;
+    id: string;
 
 }

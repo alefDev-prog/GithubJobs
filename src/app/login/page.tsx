@@ -4,7 +4,7 @@ import {useLogin} from "@/hooks/useLogin";
 import { useLogout } from "@/hooks/useLogout";
 import { useEffect } from "react";
 import { Octokit } from "@octokit/rest";
-import Cookies from "js-cookie";
+
 
 export default function Login() {
     const {login, isPending, accessToken} = useLogin();

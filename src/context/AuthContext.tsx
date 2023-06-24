@@ -29,7 +29,7 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
           setCurrentUser(user);
-          console.log("Here")
+
           if(user) {
             Cookies.set('loggedIn', "loggedIn", {expires: 10});
             if(user?.photoURL) Cookies.set("user-image", user?.photoURL);
