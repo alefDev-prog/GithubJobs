@@ -19,7 +19,7 @@ export default function Explorer() {
         const unsubscribe = onSnapshot(
             query(collectionGroup(db, "userJobs"), orderBy("createdAt", "desc"), limit(10)),
             (snapshot) => {
-                const newItems = snapshot.docs.map((doc) => doc.data());
+                const newItems = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
                 if(newItems.length < 20) setHasMore(false);
                 setItems(newItems);
                 setLastItem(newItems.length > 0 ? newItems[newItems.length - 1] : null);
@@ -48,8 +48,7 @@ export default function Explorer() {
             }
 
             const orderedDocs = await getDocs(ordered);
-            const newItems = orderedDocs.docs.map((doc) => doc.data());
-            console.log(newItems);
+            const newItems = orderedDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
             setItems((prevItems) => [...prevItems, ...newItems]);
             setLastItem(newItems.length > 0 ? newItems[newItems.length - 1] : null);
             if (orderedDocs.docs.length < 2) setHasMore(false);
