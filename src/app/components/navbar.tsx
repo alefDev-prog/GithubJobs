@@ -8,7 +8,6 @@ export default function Navbar() {
     const userImage = cookieStore.get('user-image')?.value;
     const userName = cookieStore.get('user-name')?.value;
     const token = cookieStore.get('loggedIn');
-    console.log(userImage);
 
     if(!token) {
       return (
