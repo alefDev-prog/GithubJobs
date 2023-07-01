@@ -23,7 +23,7 @@ export default function JobItem({info}: {info:jobInfo}) {
                     <strong>Period:</strong> {info.period}
                 </p>
                 <p className="card-text">
-                    <strong>Salary:</strong> {info.salary}
+                    <strong>Salary:</strong> ${info.salary}
                 </p>
                 <p className="card-text">
                     <strong>Payment:</strong> {info.payment}

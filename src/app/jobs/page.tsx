@@ -12,7 +12,7 @@ export default function Job() {
 
   const search = useSearchParams();
   const id = search.get("id");
-  const currentUser = useAuth()
+  const currentUser = useAuth();
   
 
   const [currentJob, setCurrentJob] = useState<DocumentData|null>(null);
@@ -50,7 +50,7 @@ export default function Job() {
         const jobDoc = doc(subCollectionRef);
         
 
-        const applicationInfo = {
+        const applicantInfo = {
           jobId: currentJob?.id,
           applicant: {
             name: currentUser.user?.displayName,
@@ -60,7 +60,19 @@ export default function Job() {
           coverletter: letter.current?.value,
         }
 
-        await setDoc(jobDoc, applicationInfo)
+
+        const applicationInfo = {
+          jobId: currentJob?.id,
+          applicant: {
+            name: currentUser.user?.displayName,
+            image: currentUser.user?.photoURL,
+            id: currentUser.user?.uid,
+          },
+          coverletter: letter.current?.value,
+        }
+        
+        //setting info for applicant
+        await setDoc(jobDoc, applicantInfo);
     }
   }
 
