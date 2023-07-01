@@ -30,3 +30,8 @@ export interface jobInfo {
     id: string;
 
 }
+
+export interface userData {
+    userApplications: object,
+    userJobs: object
+}
