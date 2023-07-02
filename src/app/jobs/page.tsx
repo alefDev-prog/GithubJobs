@@ -3,7 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { where } from "@firebase/firestore";
-import { DocumentData, collection, collectionGroup, doc, getDoc, getDocs, query, setDoc } from "firebase/firestore";
+import { DocumentData, arrayUnion, collection, collectionGroup, doc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -45,6 +45,7 @@ export default function Job() {
     const userId = currentUser?.user?.uid;
 
     if(userId){
+        console.log("here")
         const docRef = doc(db, "users", userId);
         const subCollectionRef = collection(docRef, "userApplications");
         const jobDoc = doc(subCollectionRef);
@@ -52,11 +53,6 @@ export default function Job() {
 
         const applicantInfo = {
           jobId: currentJob?.id,
-          applicant: {
-            name: currentUser.user?.displayName,
-            image: currentUser.user?.photoURL,
-            id: currentUser.user?.uid,
-          },
           coverletter: letter.current?.value,
         }
 
@@ -70,9 +66,48 @@ export default function Job() {
           },
           coverletter: letter.current?.value,
         }
+
+        const messageInfo = {
+          type: "Application",
+          job: {
+            title: currentJob?.title,
+            id: currentJob?.id
+          },
+          applicant: {
+            name: currentUser.user?.displayName,
+            image: currentUser.user?.photoURL,
+            id: currentUser.user?.uid,
+          }
+
+        }
+
+        if(currentJob) {
+          const userRef = doc(db, "users", currentJob.publisher.userId);
+          const jobRef = doc(db, "users", currentJob.publisher.userId, "userJobs", currentJob.id);
+          const promises = [
+            setDoc(jobDoc, applicantInfo),
+            updateDoc(jobRef, {applications: arrayUnion(applicationInfo)}),
+            updateDoc(userRef, {messages: arrayUnion(messageInfo)})
+          ];
+
+          await Promise.all(promises);
+
+        }
+
+       
         
+       
+        /*
         //setting info for applicant
         await setDoc(jobDoc, applicantInfo);
+
+        //insert into job-Document
+        if(currentJob) {
+          
+          await updateDoc(jobRef, {applications: arrayUnion(applicationInfo)});
+        }
+        */
+        
     }
   }
 
