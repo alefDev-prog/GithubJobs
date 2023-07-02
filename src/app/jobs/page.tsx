@@ -77,7 +77,8 @@ export default function Job() {
             name: currentUser.user?.displayName,
             image: currentUser.user?.photoURL,
             id: currentUser.user?.uid,
-          }
+          },
+          viewed: false
 
         }
 
@@ -93,20 +94,6 @@ export default function Job() {
           await Promise.all(promises);
 
         }
-
-       
-        
-       
-        /*
-        //setting info for applicant
-        await setDoc(jobDoc, applicantInfo);
-
-        //insert into job-Document
-        if(currentJob) {
-          
-          await updateDoc(jobRef, {applications: arrayUnion(applicationInfo)});
-        }
-        */
         
     }
   }
