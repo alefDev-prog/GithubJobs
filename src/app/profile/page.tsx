@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
-import { DocumentData, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { DocumentData, collection, doc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export default function Profile() {

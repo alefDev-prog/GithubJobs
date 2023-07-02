@@ -73,8 +73,8 @@ export default function JobForm({values}: {values: employerReducer}) {
                         salary: salary.current.value,
                         publisher: userInfo,
                         createdAt: serverTimestamp(),
-                        id: jobDoc.id
-                        
+                        id: jobDoc.id,
+                        applications: []
                     }
                     await setDoc(jobDoc, jobOffering)
                 } 
