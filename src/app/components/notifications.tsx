@@ -2,7 +2,7 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
@@ -11,13 +11,22 @@ export default function Notification({userName, userImage}: {userName: string|un
 
     const currentUser = useAuth();
     const userId = currentUser?.user?.uid;
+
+
+    const [mess, setMess] = useState(0);
     useEffect(() => {
         
         if(userId) {
             const unsub = onSnapshot(doc(db, "users", userId), (doc) => {
                 const userDoc = doc.data();
                 const messages = userDoc?.messages;
-                console.log(messages);
+                let counter = 0;
+                if(messages) {
+                    messages.forEach((mess:any) => {
+                        if(mess.viewed === false) counter++;
+                    })
+                }
+                setMess(counter);
 
             });
 
@@ -26,7 +35,7 @@ export default function Notification({userName, userImage}: {userName: string|un
         
 
           
-    }, []);
+    }, [currentUser]);
 
     return(
 
@@ -38,7 +47,7 @@ export default function Notification({userName, userImage}: {userName: string|un
               
             <div>
                 <FontAwesomeIcon icon={faBell} style={{height:"25px", color:"green"}}/>
-                <span className="badge rounded-pill badge-notification bg-danger">1</span>
+                <span className="badge rounded-pill badge-notification bg-danger">{mess}</span>
 
             </div>
 
