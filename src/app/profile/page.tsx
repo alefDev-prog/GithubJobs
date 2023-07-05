@@ -19,18 +19,21 @@ export default function Profile() {
             try {
                
                 const docRef = doc(db, "users", userId? userId : "");
-                //const docSnap = await getDoc(docRef);
-                //const userData = docSnap.data();
-                
-                
                 
                 //fetch jobs
                 const userJobsRef = collection(docRef, "userJobs");
                 const userJobsSnap = await getDocs(userJobsRef);
                 const userJobsData = userJobsSnap.docs.map((doc) => doc.data());
+
+                //fetch applications
+                const userApplicationsRef = collection(docRef, "userApplications");
+                const userApplicationsSnap = await getDocs(userApplicationsRef);
+                const userApplicationsData = userApplicationsSnap.docs.map((doc) => doc.data());
                 
-                console.log(userJobsData)
-                setUserData(userJobsData);
+                setUserData({
+                    jobs:userJobsData,
+                    applications: userApplicationsData
+                });
                
             } catch(err) {
                 console.log(err);

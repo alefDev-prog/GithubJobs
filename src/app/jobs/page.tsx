@@ -83,12 +83,14 @@ export default function Job() {
         }
 
         if(currentJob) {
-          const userRef = doc(db, "users", currentJob.publisher.userId);
+          //const userRef = doc(db, "users", currentJob.publisher.userId);
           const jobRef = doc(db, "users", currentJob.publisher.userId, "userJobs", currentJob.id);
+          const messagesRef = collection(docRef, "messages");
+          const messagesDoc = doc(messagesRef);
           const promises = [
             setDoc(jobDoc, applicantInfo),
             updateDoc(jobRef, {applications: arrayUnion(applicationInfo)}),
-            updateDoc(userRef, {messages: arrayUnion(messageInfo)})
+            setDoc(messagesDoc, messageInfo),
           ];
 
           await Promise.all(promises);
