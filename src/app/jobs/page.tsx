@@ -67,26 +67,31 @@ export default function Job() {
           coverletter: letter.current?.value,
         }
 
-        const messageInfo = {
-          type: "Application",
-          job: {
-            title: currentJob?.title,
-            id: currentJob?.id
-          },
-          applicant: {
-            name: currentUser.user?.displayName,
-            image: currentUser.user?.photoURL,
-            id: currentUser.user?.uid,
-          },
-          viewed: false
-
-        }
+        
 
         if(currentJob) {
           //const userRef = doc(db, "users", currentJob.publisher.userId);
           const jobRef = doc(db, "users", currentJob.publisher.userId, "userJobs", currentJob.id);
           const messagesRef = collection(docRef, "messages");
           const messagesDoc = doc(messagesRef);
+
+
+          const messageInfo = {
+            type: "Application",
+            job: {
+              title: currentJob?.title,
+              id: currentJob?.id
+            },
+            applicant: {
+              name: currentUser.user?.displayName,
+              image: currentUser.user?.photoURL,
+              id: currentUser.user?.uid,
+            },
+            viewed: false,
+            id: messagesDoc.id,
+  
+          }
+
           const promises = [
             setDoc(jobDoc, applicantInfo),
             updateDoc(jobRef, {applications: arrayUnion(applicationInfo)}),
