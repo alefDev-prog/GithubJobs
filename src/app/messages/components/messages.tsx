@@ -28,12 +28,16 @@ export default function Message({message}: {message:any}) {
                 />
               </div>
               <div className="col-md-10">
-                <h5 className="card-title">{message.job.title}</h5>
-                <p className="card-text">Applicant: {message.applicant.name}</p>
-                <p className="card-text">Type: {message.type}</p>
-                <p className="card-text">Job ID: {message.job.id}</p>
-                <p className="card-text">Applicant ID: {message.applicant.id}</p>
-                {/* Display more properties as needed */}
+                
+                {message.type === "Application" && 
+                  <>
+                    <p className="card-text-body-emphasis">Job application</p>
+                    <p className="card-text">Job: {message.job.title}</p>
+                    <p className="card-text">Applicant: {message.applicant.name}</p>
+                  </>
+                }
+                
+              
               </div>
             </div>
           </div>

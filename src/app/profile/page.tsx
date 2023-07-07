@@ -19,6 +19,10 @@ export default function Profile() {
             try {
                
                 const docRef = doc(db, "users", userId? userId : "");
+                //const docSnap = await getDoc(docRef);
+                //const userData = docSnap.data();
+                
+                
                 
                 //fetch jobs
                 const userJobsRef = collection(docRef, "userJobs");
