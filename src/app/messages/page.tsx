@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { DocumentData, collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import Message from "./messages";
+import Message from "./components/messages";
 
 export default function Messages() {
     const currentUser = useAuth();
