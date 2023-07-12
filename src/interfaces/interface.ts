@@ -35,3 +35,13 @@ export interface userData {
     userApplications: object,
     userJobs: object
 }
+
+export interface applicationData {
+    applicant: {
+        id: string,
+        image: string,
+        name: string
+    },
+    coverletter: string,
+    jobId: string
+}

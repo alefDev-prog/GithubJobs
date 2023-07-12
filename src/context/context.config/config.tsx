@@ -47,4 +47,21 @@ Stupio sam u kontakt sa Socialtjänsten i oni su mi pomogli da nadjem mjesto gdj
 mogu da zivim. Ja hocu da rijesimo ove probleme i da sretno skupa zivimo.
 
 
+1. torb
+2. med kyl
+3. med tillbehör
+4. dator
+5. dator ladd
+6. mobil ladd
+7. kalsong
+8. strump
+9. tröj
+10. byx
+11. sko
+12. jackor
+13. plånbok
+14. stäng av tracki
+15. Go
+
+
 */

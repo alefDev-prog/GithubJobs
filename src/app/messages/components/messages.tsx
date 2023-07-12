@@ -3,14 +3,23 @@
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { doc, updateDoc } from "firebase/firestore";
+import { useRouter } from 'next/navigation';
 
 export default function Message({message}: {message:any}) {
 
   const currentUser = useAuth();
+  const {push} = useRouter();
   function handleClick() {
+   
     if(!message.viewed && currentUser?.user?.uid) {
       const messagesRef = doc(db, "users", currentUser?.user?.uid, "messages", message.id);
       updateDoc(messagesRef, {viewed: true});
+
+    }
+
+    if(message.type == "Application") {
+      console.log(message.applicationId);
+      push(`/applications?id=${message.job.id}|${message.applicationId}`);
     }
   }
   
