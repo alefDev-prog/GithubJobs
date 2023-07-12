@@ -65,6 +65,7 @@ export default function Job() {
             id: currentUser.user?.uid,
           },
           coverletter: letter.current?.value,
+          id: jobDoc.id
         }
 
         
@@ -89,6 +90,7 @@ export default function Job() {
             },
             viewed: false,
             id: messagesDoc.id,
+            applicationId: jobDoc.id
   
           }
 
