@@ -19,7 +19,7 @@ export default function Message({message}: {message:any}) {
 
     if(message.type == "Application") {
       console.log(message.applicationId);
-      push(`/applications?id=${message.job.id}|${message.applicationId}`);
+      push(`/request?id=${message.job.id}|${message.applicationId}`);
     }
   }
   
