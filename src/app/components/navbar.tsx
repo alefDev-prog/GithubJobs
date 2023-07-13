@@ -1,12 +1,24 @@
+"use client";
+
 import Link from "next/link";
-import { cookies } from  'next/headers';
+import Cookies from "js-cookie";
 import Notification from "./notifications";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
-    const cookieStore = cookies()
-    const userImage = cookieStore.get('user-image')?.value;
-    const userName = cookieStore.get('user-name')?.value;
-    const token = cookieStore.get('loggedIn');
+    const [userImage, setUserImage] = useState<string>();
+    const [userName, setUserName] = useState<string>();
+    const [token, setToken] = useState<boolean>();
+
+    useEffect(() => {
+     
+      const userImage = Cookies.get('user-image');
+      const userName = Cookies.get('user-name');
+      const token = Cookies.get('loggedIn'); 
+      setUserImage(userImage);
+      setUserName(userName);
+      token ? setToken(true) : setToken(false);
+    }, [])  
 
     if(!token) {
       return (

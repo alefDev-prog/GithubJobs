@@ -9,7 +9,7 @@ export const useLogin = () => {
   const [isPending, setIsPending] = useState(false);
   const [accessToken, setAccessToken] = useState<string | undefined>("");
   const provider = new GithubAuthProvider();
-  
+
 
   const login = async () => {
     setError(null);
