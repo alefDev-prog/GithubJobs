@@ -11,6 +11,7 @@ export interface jobInfo {
     description: string;
     payment: string;
     period: string;
+    applications: applicationData[]
     publisher: {
         name: string,
         image: string,
@@ -42,6 +43,7 @@ export interface applicationData {
         name: string
     },
     coverletter: string,
+    id: string,
     jobId: string
 }
 
@@ -80,3 +82,5 @@ export interface requestObject {
     }
     
 }
+
+

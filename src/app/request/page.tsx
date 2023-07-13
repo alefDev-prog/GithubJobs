@@ -2,9 +2,11 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+import { applicationData, jobInfo, requestObject } from "@/interfaces/interface";
+import { arrayUnion, collection, doc, getDoc,setDoc, updateDoc } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 
 export default function Request() {
     const currentUser = useAuth();
@@ -12,7 +14,7 @@ export default function Request() {
     const id = search.get("id");
 
 
-    const [jobData, setJobData] = useState<any>(null);
+    const [jobData, setJobData] = useState<requestObject>();
   
     useEffect(() => {
       async function getData() {
@@ -24,27 +26,88 @@ export default function Request() {
         if (userId && jobId) {
           const jobDoc = doc(db, "users", userId, "userJobs", jobId);
           const userJobSnap = await getDoc(jobDoc);
-          const jobInfo = userJobSnap.data();
+          const jobInfo = userJobSnap.data() as jobInfo;
          
-          let applicationData;
+          let applicationData: applicationData;
   
           
-          jobInfo?.applications.forEach((app: any) => {
+          jobInfo?.applications.forEach((app: applicationData) => {
               if(app.id === appId) {
                   applicationData = app;
+                  setJobData({jobInfo, applicationData});
                   return;
               }
           });
 
-          setJobData({jobInfo, applicationData});
+          
         }   
 
-  
-        
       }
   
       getData();
     }, [currentUser]);
+
+
+
+    async function interview() {
+        const applicantId = jobData?.applicationData.applicant.id;
+        const userId: string|undefined = currentUser?.user?.uid;
+        let combinedId = "";
+
+        if(userId && applicantId) {
+            combinedId = userId > applicantId
+            ? userId + applicantId
+            : applicantId + userId
+
+
+            try {
+                const coversationRes = await getDoc(doc(db, "chats", combinedId));
+                //const userChatRes = await getDoc(doc(db, "users", userId, "userChats", combinedId));
+                const userRef = doc(db, "users", userId);
+                
+                //Insert into userChats
+                const chatCollection = collection(userRef, "userChats");
+                const chatData = {
+                    friend: {
+                        name: jobData.applicationData.applicant.name,
+                        image: jobData.applicationData.applicant.image
+                    },
+                    chatId: coversationRes.id
+                }
+                setDoc(doc(chatCollection, combinedId), chatData);
+
+
+                //initial message (conversation-initializator)
+                const initialMessage = {
+                    type: "interview",
+                    job: {
+                        title: jobData.jobInfo.title,
+                        salary: jobData.jobInfo.salary,
+                        repoURL: jobData.jobInfo.repository.html_url,
+                        repoName: jobData.jobInfo.repository.name
+                    },
+                }
+
+                //check if chat already exists
+                if(!coversationRes.exists()) {
+                    console.log("hey")
+                    await setDoc(doc(db, "chats", combinedId), {messages: [initialMessage]});
+                }
+                else {
+                    console.log("no")
+                    await updateDoc(doc(db, "chats", combinedId), {
+                        messages: arrayUnion(initialMessage)
+                    });
+                }
+
+
+            } catch(error) {
+                console.log(error);
+            }
+        }
+
+    }
+    
 
     if(jobData) {
         return (
@@ -84,7 +147,7 @@ export default function Request() {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                    <button className="btn btn-primary">Start Interview</button>
+                    <button className="btn btn-primary" onClick={interview}>Start Interview</button>
                     </div>
                 </div>
                 </div>

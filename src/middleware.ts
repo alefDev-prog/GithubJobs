@@ -10,6 +10,8 @@ export function middleware(request: NextRequest) {
 
     if(!loggedInCookie && (request.url == origin+"/employer"
     || request.url == origin+"/coder"
+    || request.url == origin+"/profile"
+    || request.url == origin+"/jobs"
     || request.url == origin+"/profile")) {
         return NextResponse.redirect(origin);
     }
