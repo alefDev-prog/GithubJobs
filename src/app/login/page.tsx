@@ -10,7 +10,7 @@ export default function Login() {
     const {login, isPending, accessToken} = useLogin();
     const { logout } = useLogout();
     const currentUser = useAuth();
-    const envTest = process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN;
+    
     
     useEffect(() => {
         if(accessToken)
@@ -33,7 +33,7 @@ export default function Login() {
 
     async function handleLogin() {
         await login();
-        //window.location.reload();
+        window.location.reload();
         
         
     }
@@ -53,7 +53,6 @@ export default function Login() {
                     {isPending ? "Loading..." : "Login With Github"}
                 </button>
                 <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
-                <button onClick={() => console.log(envTest)}>Env</button>
             </div>
         </main>
     )
