@@ -20,7 +20,7 @@ export const useLogin = () => {
       if (!res) {
         throw new Error("Could not complete signup");
       }
-      setAccessToken(GithubAuthProvider.credentialFromResult(res)?.accessToken)
+      setAccessToken(GithubAuthProvider.credentialFromResult(res)?.accessToken);
       
       setIsPending(false)
     } catch (error) {

@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { applicationData, jobInfo, requestObject } from "@/interfaces/interface";
 import { arrayUnion, collection, doc, getDoc,setDoc, updateDoc } from "firebase/firestore";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 
@@ -12,6 +12,7 @@ export default function Request() {
     const currentUser = useAuth();
     const search = useSearchParams();
     const id = search.get("id");
+    const {push} = useRouter();
 
 
     const [jobData, setJobData] = useState<requestObject>();
@@ -99,6 +100,10 @@ export default function Request() {
                         messages: arrayUnion(initialMessage)
                     });
                 }
+
+                //sending user to chatt
+                push(`/chat?chatid=${combinedId}`)
+
 
 
             } catch(error) {
