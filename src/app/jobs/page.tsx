@@ -60,7 +60,7 @@ export default function Job() {
         const applicationInfo = {
           jobId: currentJob?.id,
           applicant: {
-            name: currentUser.user?.displayName,
+            name: currentUser.user?.displayName || currentUser.user?.providerData[0].displayName,
             image: currentUser.user?.photoURL,
             id: currentUser.user?.uid,
           },
@@ -84,7 +84,7 @@ export default function Job() {
               id: currentJob?.id
             },
             applicant: {
-              name: currentUser.user?.displayName,
+              name: currentUser.user?.displayName || currentUser.user?.providerData[0].displayName,
               image: currentUser.user?.photoURL,
               id: currentUser.user?.uid,
             },
