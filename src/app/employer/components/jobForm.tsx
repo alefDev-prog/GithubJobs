@@ -58,7 +58,7 @@ export default function JobForm({values}: {values: employerReducer}) {
 
                     else {
                         await setDoc(doc(userCollection, userId), {
-                            name: currentUser?.user?.displayName,
+                            name: currentUser?.user?.displayName
                         });   
                     }
                     
