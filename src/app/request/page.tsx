@@ -64,7 +64,8 @@ export default function Request() {
             try {
                 const coversationRes = await getDoc(doc(db, "chats", combinedId));
                 //const userChatRes = await getDoc(doc(db, "users", userId, "userChats", combinedId));
-                const userRef = doc(db, "users", userId);
+                const userRef = doc(db, "users", userId); 
+                const otherUserRef = doc(db, "users", jobData.applicationData.applicant.id);
                 
                 //Insert into userChats
                 const chatCollection = collection(userRef, "userChats");
@@ -76,6 +77,17 @@ export default function Request() {
                     chatId: coversationRes.id
                 }
                 setDoc(doc(chatCollection, combinedId), chatData);
+
+                //Insert into other user's userChats
+                const otherChatCollection = collection(otherUserRef, "userChats");
+                const otherChatData = {
+                    friend: {
+                        name: currentUser?.user?.displayName || currentUser?.user?.providerData[0].displayName,
+                        image: currentUser?.user?.photoURL
+                    },
+                    chatId: coversationRes.id
+                }
+                setDoc(doc(otherChatCollection, combinedId), otherChatData);
 
 
                 //initial message (conversation-initializator)

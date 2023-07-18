@@ -16,3 +16,15 @@ interface initialMessage {
 
 export type messageInstance = (userMessage|initialMessage)
 export type messageArray = (messageInstance)[];
+
+
+
+export interface userChat {
+    chatId: string,
+    friend: {
+        image: string,
+        name: string,
+    }
+}
+
+
