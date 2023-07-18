@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
-import { messageArray, messageInstance } from "@/types/types";
+import { messageArray } from "@/types/types";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

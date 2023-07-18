@@ -84,3 +84,11 @@ export interface requestObject {
 }
 
 
+export interface userChat {
+    chatId: string,
+    friend: {
+        image: string,
+        name: string,
+    }
+}
+
