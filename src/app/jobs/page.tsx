@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
+import { jobInfo } from "@/interfaces/interface";
 import { where } from "@firebase/firestore";
 import { DocumentData, arrayUnion, collection, collectionGroup, doc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
@@ -15,7 +16,7 @@ export default function Job() {
   const currentUser = useAuth();
   
 
-  const [currentJob, setCurrentJob] = useState<DocumentData|null>(null);
+  const [currentJob, setCurrentJob] = useState<jobInfo|null>(null);
   const letter = useRef<HTMLTextAreaElement | null>(null);
     
 
@@ -27,7 +28,7 @@ export default function Job() {
         const querySnapshot = await getDocs(jobQ);
         querySnapshot.forEach((doc) => {  
             const job = doc.data();
-            if(job.id == id) setCurrentJob(job);
+            if(job.id == id) setCurrentJob(job as jobInfo);
         });
 
       } catch(error) {
@@ -42,13 +43,23 @@ export default function Job() {
 
 
   async function handleSubmit() {
+
+    //currentUserID
     const userId = currentUser?.user?.uid;
 
-    if(userId){
-        console.log("here")
+    //employerId
+    const employerId = currentJob?.publisher.userId;
+
+    if(userId && employerId){
+        
+
         const docRef = doc(db, "users", userId);
         const subCollectionRef = collection(docRef, "userApplications");
         const jobDoc = doc(subCollectionRef);
+        
+        //ref to employer
+        const employerRef = doc(db, "users", employerId);
+        
         
 
         const applicantInfo = {
@@ -71,9 +82,9 @@ export default function Job() {
         
 
         if(currentJob) {
-          //const userRef = doc(db, "users", currentJob.publisher.userId);
+          
           const jobRef = doc(db, "users", currentJob.publisher.userId, "userJobs", currentJob.id);
-          const messagesRef = collection(docRef, "messages");
+          const messagesRef = collection(employerRef, "messages");
           const messagesDoc = doc(messagesRef);
 
 
