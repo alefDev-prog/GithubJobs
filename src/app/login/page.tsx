@@ -19,7 +19,6 @@ export default function Login() {
     }, [accessToken])
 
     async function handleLogout() {
-        currentUser?.setToken("");
         await logout();
         window.location.reload();
        
@@ -47,7 +46,6 @@ export default function Login() {
             <div className="App">
                 <button onClick={() => console.log(currentUser)}>Check</button>
                 <button onClick={() => console.log(accessToken)}>Check access</button>
-                <button onClick={currentUser?.setToken(accessToken)}>set</button>
                 <button onClick={getData}>Get data</button>
                 <button className="btn btn-primary" onClick={handleLogin}>
                     {isPending ? "Loading..." : "Login With Github"}

@@ -14,7 +14,7 @@ export default function Messages() {
     useEffect(() => {
 
         async function getData() {
-            const userId = currentUser?.user?.uid;
+            const userId = currentUser?.uid;
         
             
             try {
