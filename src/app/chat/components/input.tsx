@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/firebase/config";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { Timestamp, arrayUnion, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { FormEvent } from "react";
 
 export default function Input({chatId, currentId}:{chatId:string|null, currentId: string|undefined}) {
@@ -15,7 +15,11 @@ export default function Input({chatId, currentId}:{chatId:string|null, currentId
         const message = (form.elements[0] as HTMLInputElement).value;
         if(chatId && currentId) {
             updateDoc(doc(db, "chats", chatId), {
-                messages: arrayUnion({currentId, message})
+                messages: arrayUnion({
+                    currentId,
+                    message,
+                    createdAt: Timestamp.now()
+                    })
             });
         }
 
