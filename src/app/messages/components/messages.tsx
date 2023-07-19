@@ -11,8 +11,8 @@ export default function Message({message}: {message:any}) {
   const {push} = useRouter();
   function handleClick() {
    
-    if(!message.viewed && currentUser?.user?.uid) {
-      const messagesRef = doc(db, "users", currentUser?.user?.uid, "messages", message.id);
+    if(!message.viewed && currentUser?.uid) {
+      const messagesRef = doc(db, "users", currentUser?.uid, "messages", message.id);
       updateDoc(messagesRef, {viewed: true});
 
     }
