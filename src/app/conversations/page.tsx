@@ -10,7 +10,7 @@ import Conversation from "./components/conversation";
 
 export default function Conversations() {
 
-    const userId = useAuth()?.user?.uid;
+    const userId = useAuth()?.uid;
     
     const [conversations, setConversations] = useState<userChat[]>();
 

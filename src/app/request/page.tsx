@@ -19,7 +19,7 @@ export default function Request() {
   
     useEffect(() => {
       async function getData() {
-        const userId = currentUser?.user?.uid;
+        const userId = currentUser?.uid;
         const jobId = id?.split("|")[0];
         const appId = id?.split("|")[1];
         console.log(jobId);
@@ -52,7 +52,7 @@ export default function Request() {
 
     async function interview() {
         const applicantId = jobData?.applicationData.applicant.id;
-        const userId: string|undefined = currentUser?.user?.uid;
+        const userId: string|undefined = currentUser?.uid;
         let combinedId = "";
 
         if(userId && applicantId) {
@@ -82,8 +82,8 @@ export default function Request() {
                 const otherChatCollection = collection(otherUserRef, "userChats");
                 const otherChatData = {
                     friend: {
-                        name: currentUser?.user?.displayName || currentUser?.user?.providerData[0].displayName,
-                        image: currentUser?.user?.photoURL
+                        name: currentUser?.displayName || currentUser?.providerData[0].displayName,
+                        image: currentUser?.photoURL
                     },
                     chatId: coversationRes.id
                 }

@@ -18,7 +18,7 @@ export default function Chat() {
     const [friend, setFriend] = useState<friend>();
 
     const currentUser = useAuth();
-    const currentId = currentUser?.user?.uid;
+    const currentId = currentUser?.uid;
 
 
     useEffect(() => {
@@ -66,10 +66,10 @@ export default function Chat() {
                                   <p className="mb-0">{item.message}</p>
                                   </div>
                                   </div>
-                                {currentUser?.user?.photoURL && (
+                                {currentUser?.photoURL && (
                                 <div className="ml-2">
                                     <Image
-                                    src={currentUser?.user?.photoURL}
+                                    src={currentUser?.photoURL}
                                     alt="Current User"
                                     width={40}
                                     height={40}

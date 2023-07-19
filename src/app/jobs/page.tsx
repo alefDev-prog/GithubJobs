@@ -45,7 +45,7 @@ export default function Job() {
   async function handleSubmit() {
 
     //currentUserID
-    const userId = currentUser?.user?.uid;
+    const userId = currentUser?.uid;
 
     //employerId
     const employerId = currentJob?.publisher.userId;
@@ -71,9 +71,9 @@ export default function Job() {
         const applicationInfo = {
           jobId: currentJob?.id,
           applicant: {
-            name: currentUser.user?.displayName || currentUser.user?.providerData[0].displayName,
-            image: currentUser.user?.photoURL,
-            id: currentUser.user?.uid,
+            name: currentUser.displayName || currentUser.providerData[0].displayName,
+            image: currentUser.photoURL,
+            id: currentUser.uid,
           },
           coverletter: letter.current?.value,
           id: jobDoc.id
@@ -95,9 +95,9 @@ export default function Job() {
               id: currentJob?.id
             },
             applicant: {
-              name: currentUser.user?.displayName || currentUser.user?.providerData[0].displayName,
-              image: currentUser.user?.photoURL,
-              id: currentUser.user?.uid,
+              name: currentUser.displayName || currentUser.providerData[0].displayName,
+              image: currentUser.photoURL,
+              id: currentUser.uid,
             },
             viewed: false,
             id: messagesDoc.id,

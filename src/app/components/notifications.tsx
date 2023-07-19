@@ -11,7 +11,7 @@ import Link from "next/link";
 export default function Notification({userName, userImage}: {userName: string|undefined, userImage: string|undefined}) {
 
     const currentUser = useAuth();
-    const userId = currentUser?.user?.uid;
+    const userId = currentUser?.uid;
 
 
     const [mess, setMess] = useState(0);
