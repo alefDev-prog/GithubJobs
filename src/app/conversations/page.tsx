@@ -36,17 +36,16 @@ export default function Conversations() {
 
     if(conversations) {
         return (
-            <>
-                <button onClick={() => console.log(conversations)}>Test</button>
-                <div className="container">
-                    <h1 className="mt-4 mb-3">My Conversations</h1>
-                    <div className="d-flex flex-column">
-                        {conversations.map((conversation) => (
-                            <Conversation conversation={conversation}/>
-                        ))}
-                    </div>
-                    </div>
-            </>
+        
+            <div className="container">
+                <h1 className="mt-4 mb-3">My Conversations</h1>
+                <div className="d-flex flex-column">
+                    {conversations.map((conversation) => (
+                        <Conversation conversation={conversation}/>
+                    ))}
+                </div>
+                </div>
+        
         )
     }
 

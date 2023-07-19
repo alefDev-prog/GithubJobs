@@ -1,6 +1,6 @@
 interface userMessage {
     message?: string,
-    senderId?: string
+    currentId?: string
 }
 
 interface initialMessage {
@@ -19,12 +19,6 @@ export type messageArray = (messageInstance)[];
 
 
 
-export interface userChat {
-    chatId: string,
-    friend: {
-        image: string,
-        name: string,
-    }
-}
+
 
 

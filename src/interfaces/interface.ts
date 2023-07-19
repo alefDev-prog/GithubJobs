@@ -92,3 +92,8 @@ export interface userChat {
     }
 }
 
+export interface friend {
+    image: string,
+    name: string
+}
+

@@ -65,7 +65,7 @@ export default function Request() {
                 const coversationRes = await getDoc(doc(db, "chats", combinedId));
                 //const userChatRes = await getDoc(doc(db, "users", userId, "userChats", combinedId));
                 const userRef = doc(db, "users", userId); 
-                const otherUserRef = doc(db, "users", jobData.applicationData.applicant.id);
+                const otherUserRef = doc(db, "users", applicantId);
                 
                 //Insert into userChats
                 const chatCollection = collection(userRef, "userChats");
