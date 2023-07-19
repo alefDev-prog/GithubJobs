@@ -35,9 +35,9 @@ export default function JobForm({values}: {values: employerReducer}) {
         }
 
         const userInfo = {
-            name: currentUser?.user?.displayName || currentUser?.user?.providerData[0].displayName,
-            image: currentUser?.user?.photoURL,
-            userId: currentUser?.user?.uid
+            name: currentUser?.displayName || currentUser?.providerData[0].displayName,
+            image: currentUser?.photoURL,
+            userId: currentUser?.uid
         }
 
 
@@ -45,7 +45,7 @@ export default function JobForm({values}: {values: employerReducer}) {
             if (title.current && description.current && payment.current && period.current && salary.current) {
                 
 
-                const userId = currentUser?.user?.uid;
+                const userId = currentUser?.uid;
 
                 if(userId){
                     const docRef = doc(db, "users", userId);
@@ -58,7 +58,7 @@ export default function JobForm({values}: {values: employerReducer}) {
 
                     else {
                         await setDoc(doc(userCollection, userId), {
-                            name: currentUser?.user?.displayName || currentUser.user?.providerData[0].displayName
+                            name: currentUser?.displayName || currentUser?.providerData[0].displayName
                         });   
                     }
                     

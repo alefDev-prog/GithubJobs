@@ -13,7 +13,6 @@ export default function Employer() {
 
 
     useEffect(() => {
-        console.log(currentUser?.token);
         const token = localStorage.getItem("GithubToken");
         
         const octokit = new Octokit({ 

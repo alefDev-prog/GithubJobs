@@ -6,29 +6,17 @@ import { User, onIdTokenChanged, onAuthStateChanged } from "firebase/auth";
 import { GithubAuthProvider } from "firebase/auth";
 import Cookies from "js-cookie";
 
-interface UserInfo {
-  user?: User|null,
-  token?: string
-  setToken: any
-}
 
-const AuthContext = createContext<UserInfo|null>(null);
+const AuthContext = createContext<User|null>(null);
 
 
 export function AuthProvider({children} : {children: React.ReactNode}) {
 
-    const [currentUser, setCurrentUser] = useState<User|null>(null);
-    const [token, setToken] = useState("");
-
-    const currentUserInfo: UserInfo = {
-      user: currentUser,
-      token: token,
-      setToken: setToken
-    } 
-
+    const [currentUser, setCurrentUser] = useState<User>();
+    
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-          setCurrentUser(user);
+          setCurrentUser(user as User);
 
           if(user) {
             Cookies.set('loggedIn', "loggedIn", {expires: 10});
@@ -49,11 +37,22 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
         return unsubscribe;
       }, []);
 
-    return (
-        <AuthContext.Provider value={currentUserInfo}>
+    
+    if(currentUser) {
+      return (
+        <AuthContext.Provider value={currentUser}>
             {children}
         </AuthContext.Provider>
+      )
+    }
+    else return(
+    <>
+      {children}
+    </> 
+
     )
+
+    
 }
 
 export function useAuth() {

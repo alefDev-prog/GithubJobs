@@ -13,7 +13,7 @@ export default function Profile() {
     useEffect(() => {
 
         async function getData() {
-            const userId = currentUser?.user?.uid;
+            const userId = currentUser?.uid;
         
             
             try {
