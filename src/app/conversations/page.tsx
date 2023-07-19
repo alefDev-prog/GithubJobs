@@ -41,7 +41,7 @@ export default function Conversations() {
                 <h1 className="mt-4 mb-3">My Conversations</h1>
                 <div className="d-flex flex-column">
                     {conversations.map((conversation) => (
-                        <Conversation conversation={conversation}/>
+                        <Conversation conversation={conversation} key={conversation.chatId}/>
                     ))}
                 </div>
                 </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/firebase/config";
-import { Timestamp, arrayUnion, doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { Timestamp, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { FormEvent } from "react";
 
 export default function Input({chatId, currentId}:{chatId:string|null, currentId: string|undefined}) {
