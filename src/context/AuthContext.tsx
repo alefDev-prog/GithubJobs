@@ -31,10 +31,8 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
           
 
         });
-
-        GithubAuthProvider.credential
      
-        return unsubscribe;
+        return () => unsubscribe();
       }, []);
 
     
