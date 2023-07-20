@@ -1,12 +1,12 @@
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase/config";
-import { use, useState } from "react";
+import { auth, db } from "../firebase/config";
+import { useState } from "react";
+import { doc, updateDoc } from "firebase/firestore";
 
 
 export const useLogin = () => {
   const [error, setError] = useState<null | string>(null);
   const [isPending, setIsPending] = useState(false);
-  const [accessToken, setAccessToken] = useState<string | undefined>("");
   const provider = new GithubAuthProvider();
 
 
@@ -20,7 +20,15 @@ export const useLogin = () => {
       if (!res) {
         throw new Error("Could not complete signup");
       }
-      setAccessToken(GithubAuthProvider.credentialFromResult(res)?.accessToken);
+
+      const accessToken = GithubAuthProvider.credentialFromResult(res)?.accessToken
+
+      //setting Github accessToken in DB
+      if (auth.currentUser) {
+        updateDoc(doc(db, "users", auth?.currentUser?.uid), {
+          accessToken: accessToken
+        })
+      }
       
       setIsPending(false)
     } catch (error) {
@@ -32,5 +40,5 @@ export const useLogin = () => {
     }
   };
 
-  return { login, error, isPending, accessToken };
+  return { login, error, isPending };
 };
