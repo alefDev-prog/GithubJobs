@@ -21,7 +21,7 @@ export default function Login() {
 
     async function handleLogin() {
         await login();
-        window.location.reload();
+        //window.location.reload();
     }
     
     
