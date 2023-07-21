@@ -97,3 +97,7 @@ export interface friend {
     name: string
 }
 
+export interface encryptedData {
+    iv: string,
+    encryptedData: string
+}

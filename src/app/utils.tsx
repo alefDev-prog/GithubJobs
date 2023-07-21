@@ -1,7 +1,6 @@
 import { db } from "@/firebase/config";
-import { applicationData } from "@/interfaces/interface";
-import { DocumentData, DocumentSnapshot, doc, getDoc,} from "firebase/firestore";
-import { Dispatch, SetStateAction } from "react";
+import { doc, getDoc,} from "firebase/firestore";
+
 
 export async function fetchApplication(jobId: string, appId:string, userId: string) {
    
@@ -19,12 +18,5 @@ export async function fetchApplication(jobId: string, appId:string, userId: stri
     });
 
     return {jobData, applicationData};
-    
 
-
-        
-
-        
-
-    
 }

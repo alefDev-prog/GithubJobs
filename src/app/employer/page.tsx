@@ -8,6 +8,8 @@ import { employerReducer, ActionKinds, initialValues, Action } from "./component
 import JobForm from "./components/jobForm";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import { encryptedData } from "@/interfaces/interface";
+import { decrypt } from "../crypto/funcs";
 
 export default function Employer() {
     const currentUser = useAuth();
@@ -24,9 +26,10 @@ export default function Employer() {
                 if(currentUser) {
 
                     const userSnap = await getDoc(doc(db, "users", currentUser?.uid))
-                    const token = userSnap.data()?.accessToken;
+                    const token = userSnap.data()?.accessToken as encryptedData;
+                    const decryptedToken = decrypt(token);
                     const octokit = new Octokit({ 
-                        auth: token
+                        auth: decryptedToken
                     });
                     const response = await octokit.repos.listForAuthenticatedUser({visibility:"all"});
                     dispatch({type: ActionKinds.SET_REPO_INFO, payload: response.data});
