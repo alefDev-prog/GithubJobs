@@ -1,6 +1,10 @@
+import { adminSDK } from "@/firebase/admin";
 import { auth } from "firebase-admin";
 import { NextRequest, NextResponse } from "next/server";
 
+if(adminSDK.apps.length === 0) {
+  adminSDK.initializeApp();
+}
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const sessionCookie = req.cookies.get("serverCookie");
