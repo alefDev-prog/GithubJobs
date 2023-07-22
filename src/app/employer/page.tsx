@@ -6,6 +6,10 @@ import { useEffect, useReducer, Key } from "react";
 import Repo from "./components/repo";
 import { employerReducer, ActionKinds, initialValues, Action } from "./components/reducer";
 import JobForm from "./components/jobForm";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
+import { encryptedData } from "@/interfaces/interface";
+import { decrypt } from "../crypto/funcs";
 
 export default function Employer() {
     const currentUser = useAuth();
@@ -13,16 +17,31 @@ export default function Employer() {
 
 
     useEffect(() => {
-        const token = localStorage.getItem("GithubToken");
+
         
-        const octokit = new Octokit({ 
-            auth: token
-        });
+            
         async function fetchRepositories() {
-            const response = await octokit.repos.listForAuthenticatedUser({visibility:"all"});
-            dispatch({type: ActionKinds.SET_REPO_INFO, payload: response.data});
+
+            try {
+                if(currentUser) {
+
+                    const userSnap = await getDoc(doc(db, "users", currentUser?.uid))
+                    const token = userSnap.data()?.accessToken as encryptedData;
+                    const decryptedToken = decrypt(token);
+                    const octokit = new Octokit({ 
+                        auth: decryptedToken
+                    });
+                    const response = await octokit.repos.listForAuthenticatedUser({visibility:"all"});
+                    dispatch({type: ActionKinds.SET_REPO_INFO, payload: response.data});
+                }
+            } catch(error) {
+                console.log(error);
+            }
+            
         }
         fetchRepositories();
+    
+        
     }, []);
 
 
