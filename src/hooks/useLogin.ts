@@ -1,12 +1,13 @@
-import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase/config";
-import { use, useState } from "react";
+import { GithubAuthProvider, getIdToken, signInWithPopup } from "firebase/auth";
+import { auth, db } from "../firebase/config";
+import { useState } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import { encrypt } from "@/app/crypto/funcs";
 
 
 export const useLogin = () => {
   const [error, setError] = useState<null | string>(null);
   const [isPending, setIsPending] = useState(false);
-  const [accessToken, setAccessToken] = useState<string | undefined>("");
   const provider = new GithubAuthProvider();
 
 
@@ -20,7 +21,34 @@ export const useLogin = () => {
       if (!res) {
         throw new Error("Could not complete signup");
       }
-      setAccessToken(GithubAuthProvider.credentialFromResult(res)?.accessToken);
+
+      const accessToken = GithubAuthProvider.credentialFromResult(res)?.accessToken
+
+      
+      if (auth.currentUser && accessToken) {
+        //get id token for later server side fetching
+        const idToken = await getIdToken(auth.currentUser);
+        const loginResp = await fetch("/api/login", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${idToken}`
+          }
+        });
+        if(loginResp.status === 200) {
+            //setting Github accessToken in DB
+            console.log(await loginResp.json())
+            const encryptedToken = encrypt(accessToken);
+            console.log("here");
+            await updateDoc(doc(db, "users", auth?.currentUser?.uid), {
+            accessToken: encryptedToken
+        })
+        }
+
+        
+
+      }
+
+      
       
       setIsPending(false)
     } catch (error) {
@@ -32,5 +60,5 @@ export const useLogin = () => {
     }
   };
 
-  return { login, error, isPending, accessToken };
+  return { login, error, isPending };
 };
