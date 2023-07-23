@@ -28,7 +28,17 @@ export async function POST(req: NextRequest, res: NextResponse) {
             httpOnly: true,
             secure: true,
             maxAge: expiresIn
-        })
+        });
+
+        //set cookie for Github accessToken
+        const accessToken = await req.json();
+        nextResponse.cookies.set({
+          name: 'accessToken',
+          value: accessToken,
+          httpOnly: true,
+          secure: true,
+          maxAge: expiresIn
+      });
   
         return nextResponse;
       }

@@ -23,6 +23,16 @@ const serviceAccount = {
 
 */
 //const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT_JSON || "mock");
+/*
+const serviceAccount = require("./serviceAccountFile.json");
+
+if (!admin.apps.length) {
+  initializeApp({
+   credential: admin.credential.cert(serviceAccount),
+  });
+ }
+
+ */
 
 if (!admin.apps.length) {
  initializeApp({
