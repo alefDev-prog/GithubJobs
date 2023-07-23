@@ -10,7 +10,7 @@ export default async function Test() {
 
   
         async function testFetch() {
-            const resp = await fetch("https://jobsatgit.vercel.app/api/auth", {
+            const resp = await fetch("http://localhost:3000/api/auth", {
                 headers: {
                     "Cookie": `serverCookie=${stringCookie}`
                 },

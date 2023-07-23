@@ -32,17 +32,11 @@ export const useLogin = () => {
           method: "POST",
           headers: {
             Authorization: `Bearer ${idToken}`
-          }
+          },
+          body: JSON.stringify(accessToken)
         });
-        if(loginResp.status === 200) {
-            //setting Github accessToken in DB
-            console.log(await loginResp.json())
-            const encryptedToken = encrypt(accessToken);
-            console.log("here");
-            await updateDoc(doc(db, "users", auth?.currentUser?.uid), {
-            accessToken: encryptedToken
-        })
-        }
+        console.log(await loginResp.json());
+        
 
         
 
