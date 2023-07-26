@@ -1,3 +1,5 @@
+import { NextRequest } from "next/server";
+
 export interface repoInfo {
     name: string,
     html_url: string,
@@ -100,4 +102,12 @@ export interface friend {
 export interface encryptedData {
     iv: string,
     encryptedData: string
+}
+export interface CustomNextRequest extends NextRequest {
+    uid?: string;
+  }
+
+export interface userApplication {
+    coverletter: string,
+    jobId: string
 }
