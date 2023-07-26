@@ -1,5 +1,3 @@
-"use client";
-
 import { useAuth } from "@/context/AuthContext";
 import { Octokit } from "@octokit/rest";
 import { useEffect, useReducer, Key } from "react";
@@ -8,48 +6,34 @@ import { employerReducer, ActionKinds, initialValues, Action } from "./component
 import JobForm from "./components/jobForm";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
-import { encryptedData } from "@/interfaces/interface";
+import { encryptedData, filteredRepo } from "@/interfaces/interface";
 import { decrypt } from "../crypto/funcs";
+import fetchRepositories from "./utils/fetchRepos";
 
-export default function Employer() {
-    const currentUser = useAuth();
-    const [values, dispatch] = useReducer<(state: employerReducer, action: Action) => any>(employerReducer, initialValues);
+export default async function Employer() {
+    
+    //const [values, dispatch] = useReducer<(state: employerReducer, action: Action) => any>(employerReducer, initialValues);
 
 
-    useEffect(() => {
+    const repos = await fetchRepositories() as filteredRepo[];
+    
+    console.log(repos);
 
-        
-            
-        async function fetchRepositories() {
-
-            try {
-                if(currentUser) {
-
-                    const userSnap = await getDoc(doc(db, "users", currentUser?.uid))
-                    const token = userSnap.data()?.accessToken as encryptedData;
-                    const decryptedToken = decrypt(token);
-                    const octokit = new Octokit({ 
-                        auth: decryptedToken
-                    });
-                    const response = await octokit.repos.listForAuthenticatedUser({visibility:"all"});
-                    dispatch({type: ActionKinds.SET_REPO_INFO, payload: response.data});
-                }
-            } catch(error) {
-                console.log(error);
-            }
-            
-        }
-        fetchRepositories();
+    return (
+        <h1>Employer</h1>
+    )
     
         
-    }, []);
+ 
 
+
+    /*
 
     return (
         <main className="container-xl">
             <div className="row">
 
-                {/* The selection of repo */}
+                {/* The selection of repo 
                 <div className="col">
                     <div className="card border-1">
                         <div className="card-header">
@@ -65,13 +49,16 @@ export default function Employer() {
                     </div>  
                 </div>
 
-                {/* Adding description of job for repo */}
-                <JobForm values={values} />
                 
+                <JobForm values={values} />
+                        
             </div>
         </main>
         
+        
     );
+*/}
+    
 
-}
+
 

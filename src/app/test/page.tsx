@@ -11,12 +11,12 @@ export default async function Test() {
     const uid = await verifyAuth();
 
     if(typeof uid ==="string") {
-        const userData = await getData(uid) as {userJobsData: jobInfo[], userApplicationsInfo: userApplication[]}
+        const userData = await getData(uid) as {userJobsData: jobInfo[], userApplicationsData: userApplication[]}
         console.log(userData);
         return (
             <>
     
-            <h1>{userData.userJobsData[0].period}</h1>
+            <h1>{userData.userApplicationsData[0].coverletter}</h1>
             </>
     
         )
