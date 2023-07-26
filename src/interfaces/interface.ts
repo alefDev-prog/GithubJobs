@@ -111,3 +111,9 @@ export interface userApplication {
     coverletter: string,
     jobId: string
 }
+
+export interface filteredRepo {
+    name: string;
+    private: boolean;
+    url: string;
+}
