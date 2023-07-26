@@ -1,30 +1,31 @@
 import { adminSDK } from "@/firebase/admin";
 import { auth } from "firebase-admin";
+import { NextApiHandler, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
+import { Middleware } from "next-api-middleware";
+import { CustomNextRequest } from "@/interfaces/interface";
 
-if(adminSDK.apps.length === 0) {
-  adminSDK.initializeApp();
-}
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export default async function authMiddleware(req: CustomNextRequest) {
+  if(adminSDK.apps.length === 0) {
+    adminSDK.initializeApp();
+  }
   const sessionCookie = req.cookies.get("serverCookie");
 
   // Ensure sessionCookie and its value exists
   if (!sessionCookie || !sessionCookie.value) {
-    return NextResponse.json({isLogged: false}, {status: 401});
+    return NextResponse.json("Not logged in");
   }
   
   // Use sessionCookie.value, which is a string, instead of the whole sessionCookie object
 
   //The original cookie needs to be modified because it contains quotation marks which ruin the verification
-  const modifiedCookie = sessionCookie.value.substring(1, sessionCookie.value.length-1);
+  
 
 
-  const {uid} = await auth().verifySessionCookie(modifiedCookie, true);
+  const {uid} = await auth().verifySessionCookie(sessionCookie, true);
   if (!uid) {
-    return NextResponse.json({isLogged: false}, {status: 401});
+    return  NextResponse.json("Not logged in");
   }
-
-  return NextResponse.json({userId: uid}, {status: 200});
+  return uid;
 }
-
