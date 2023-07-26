@@ -2,41 +2,29 @@ import { adminSDK } from "@/firebase/admin";
 import { useEffect } from "react";
 import { cookies } from 'next/headers'
 import { jobInfo, userApplication } from "@/interfaces/interface";
+import verifyAuth from "@/authMiddleware/auth";
+import getData from "./utils/getUserData";
 
 export default async function Test() {
 
 
-        //Get the auth cookie
-        const cookieStore = cookies()
-        const serverCookie = cookieStore.get('serverCookie')?.value;
-        const stringCookie = JSON.stringify(serverCookie);
-        console.log(stringCookie);
+    const uid = await verifyAuth();
 
-        let jobData: jobInfo[] = [];
-        let applicationData: userApplication[] = [];
+    if(typeof uid ==="string") {
+        const userData = await getData(uid) as {userJobsData: jobInfo[], userApplicationsInfo: userApplication[]}
+        console.log(userData);
+        return (
+            <>
+    
+            <h1>{userData.userJobsData[0].period}</h1>
+            </>
+    
+        )
+    }
 
-
-        async function testFetch() {
-            const resp = await fetch("https://jobsatgit.vercel.app/api/getprof", {
-                headers: {
-                    "Cookie": `serverCookie=${stringCookie}`
-                },
-                cache: "no-store"
-            });
-            const data = await resp.json();
-            console.log(data);
-            jobData = data.userJobsData;
-            applicationData = data.userApplicationsData;
-
-        }
-        await testFetch();
-
-
-    return (
-        <>
-
-        <h1>Test</h1>
-        </>
-
+    else return (
+        <h1>Not logged in</h1>
     )
+
+    
 }

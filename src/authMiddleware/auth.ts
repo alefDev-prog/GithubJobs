@@ -4,17 +4,19 @@ import { NextApiHandler, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 import { Middleware } from "next-api-middleware";
 import { CustomNextRequest } from "@/interfaces/interface";
+import { cookies } from "next/headers";
 
 
-export default async function authMiddleware(req: CustomNextRequest) {
+export default async function verifyAuth() {
   if(adminSDK.apps.length === 0) {
     adminSDK.initializeApp();
   }
-  const sessionCookie = req.cookies.get("serverCookie");
+  const cookieStore = cookies()
+  const sessionCookie = cookieStore.get('serverCookie')?.value;
 
   // Ensure sessionCookie and its value exists
-  if (!sessionCookie || !sessionCookie.value) {
-    return NextResponse.json("Not logged in");
+  if (!sessionCookie) {
+    return new Error("no cookie")
   }
   
   // Use sessionCookie.value, which is a string, instead of the whole sessionCookie object
@@ -25,7 +27,7 @@ export default async function authMiddleware(req: CustomNextRequest) {
 
   const {uid} = await auth().verifySessionCookie(sessionCookie, true);
   if (!uid) {
-    return  NextResponse.json("Not logged in");
+    return new Error("invalid cookie")
   }
   return uid;
 }
