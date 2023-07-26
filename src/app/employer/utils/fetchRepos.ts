@@ -1,8 +1,9 @@
 import verifyAuth from "@/authMiddleware/auth";
+import { repoInfo } from "@/interfaces/interface";
 import { Octokit } from "@octokit/rest";
 import { cookies } from "next/headers";
 
-export default async function fetchRepositories() {
+export default async function fetchRepositories()  {
 
     try {
      
@@ -13,7 +14,7 @@ export default async function fetchRepositories() {
                 const cookieStore = cookies()
                 const accessToken = cookieStore.get('accessToken')?.value;
 
-                if(!accessToken) return new Error("No accessToken");
+                if(!accessToken) return null;
 
                 const octokit = new Octokit({ 
                     auth: accessToken
@@ -25,9 +26,11 @@ export default async function fetchRepositories() {
                     return {
                         name: repo.name,
                         private: repo.private,
-                        url: repo.html_url
+                        html_url: repo.html_url,
+                        language: repo.language,
+                        stargazers_count: repo.stargazers_count
 
-                    }
+                    } as repoInfo
                 });
 
                 return filteredRepos;
@@ -35,7 +38,8 @@ export default async function fetchRepositories() {
             
          
     } catch(error) {
-        return error;
+        return null
     }
+    
     
 }

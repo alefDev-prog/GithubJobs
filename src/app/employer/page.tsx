@@ -1,27 +1,30 @@
-import { useAuth } from "@/context/AuthContext";
-import { Octokit } from "@octokit/rest";
-import { useEffect, useReducer, Key } from "react";
-import Repo from "./components/repo";
-import { employerReducer, ActionKinds, initialValues, Action } from "./components/reducer";
-import JobForm from "./components/jobForm";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/firebase/config";
-import { encryptedData, filteredRepo } from "@/interfaces/interface";
-import { decrypt } from "../crypto/funcs";
+import { repoInfo } from "@/interfaces/interface";
 import fetchRepositories from "./utils/fetchRepos";
+import JobForm from "./components/jobForm";
 
 export default async function Employer() {
     
     //const [values, dispatch] = useReducer<(state: employerReducer, action: Action) => any>(employerReducer, initialValues);
 
 
-    const repos = await fetchRepositories() as filteredRepo[];
-    
+    const repos = await fetchRepositories();
     console.log(repos);
-
-    return (
-        <h1>Employer</h1>
-    )
+    
+   if(repos) {
+        return (
+            <main className="container-xl">
+                <div className="row">
+            
+        
+                    <JobForm repos={repos} />
+                </div>
+            </main>
+        )
+   }
+   else return (
+    <h1>Error</h1>
+   )
+    
     
         
  
