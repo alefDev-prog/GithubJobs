@@ -1,14 +1,18 @@
 "use client";
 
 import { addDoc, collection, doc, getDoc,setDoc} from "firebase/firestore";
-import { employerReducer } from "./reducer";
-import { FormEvent, useRef } from "react";
+import { FormEvent, Key, useRef, useState } from "react";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/AuthContext";
 import { repoInfo } from "@/interfaces/interface";
 import { serverTimestamp } from "firebase/firestore";
+import Repo from "./repo";
 
-export default function JobForm({values}: {values: employerReducer}) {
+
+export default function JobForm({repos}: {repos: repoInfo[]}) {
+
+
+    const [currentRepo, setCurrentRepo] = useState<repoInfo>()
     const title = useRef<HTMLInputElement|null>(null);
     const description = useRef<HTMLTextAreaElement|null>(null);
     const payment = useRef<HTMLSelectElement|null>(null);
@@ -23,21 +27,23 @@ export default function JobForm({values}: {values: employerReducer}) {
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+
+        if(!currentRepo || !currentUser) return;
         
         const timeStamp = new Date();
         
         const doneRepo: repoInfo = {
-            name: values.currentRepo.name,
-            html_url: values.currentRepo.html_url,
-            private: values.currentRepo.private,
-            language: values.currentRepo.language,
-            stargazers_count: values.currentRepo.stargazers_count
+            name: currentRepo.name,
+            html_url: currentRepo.html_url,
+            private: currentRepo.private,
+            language: currentRepo.language,
+            stargazers_count: currentRepo.stargazers_count
         }
 
         const userInfo = {
-            name: currentUser?.displayName || currentUser?.providerData[0].displayName,
-            image: currentUser?.photoURL,
-            userId: currentUser?.uid
+            name: currentUser.displayName || currentUser.providerData[0].displayName,
+            image: currentUser.photoURL,
+            userId: currentUser.uid
         }
 
 
@@ -45,7 +51,7 @@ export default function JobForm({values}: {values: employerReducer}) {
             if (title.current && description.current && payment.current && period.current && salary.current) {
                 
 
-                const userId = currentUser?.uid;
+                const userId = currentUser.uid;
 
                 if(userId){
                     const docRef = doc(db, "users", userId);
@@ -91,47 +97,68 @@ export default function JobForm({values}: {values: employerReducer}) {
 
 
     return (
-        <div className="col">
-            <h2>Repository: <a href={values.currentRepo.html_url} target="_blank">{values.currentRepo.name}</a></h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="jobTitle">Job Title</label>
-                    <input type="text"
-                    className="form-control form-control-lg"
-                    id="jobTitle" placeholder="Enter job title"
-                    ref={title}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="jobDescription">Job Description</label>
-                    <textarea className="form-control" id="jobDescription" rows={3} ref={description}></textarea>
-                </div>
-                <div className="form-group">
-                    <label>Payment</label>
-                    <select className="form-control" ref={payment}>
-                        <option>Fixed price</option>
-                        <option>Per milestone</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="jobPeriod">Job Period</label>
-                    <input type="text" className="form-control" id="jobPeriod" placeholder="Enter job period"
-                    ref={period}/>
-                </div>
-                <div className="form-group col-auto">
-                    <label htmlFor="jobSalary">Job Salary</label>
-                    <div className="input-group mb-2">
-                        <div className="input-group-prepend">
-                            <div className="input-group-text">$</div>
+        <>
+
+            {/*Repo selector*/}
+            <div className="col">
+                    <div className="card border-1">
+                        <div className="card-header">
+                            <h3 className="card-title">Your repositories</h3>
                         </div>
-                        <input type="number" className="form-control" id="jobSalary" placeholder="Enter job salary" min={0}
-                        ref={salary}/>
+                        <button onClick={() => console.log(currentRepo)}>check</button>
+                        <div className="list-group" style={{maxHeight: "300px", overflowY:"scroll"}}>
+
+                            {repos.map((obj: object, index: Key | null | undefined): React.ReactNode => {
+                                return <Repo repository={obj} setCurrentRepo={setCurrentRepo} key={index}/>
+                            })}
+                        </div>
+                    </div>  
+            </div>
+
+            {/*Repo form*/}
+            <div className="col">
+                <h2>Repository: <a href={currentRepo?.html_url} target="_blank">{currentRepo?.name}</a></h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="jobTitle">Job Title</label>
+                        <input type="text"
+                        className="form-control form-control-lg"
+                        id="jobTitle" placeholder="Enter job title"
+                        ref={title}
+                        />
                     </div>
-                </div>
-                <div className="form-group">
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
+                    <div className="form-group">
+                        <label htmlFor="jobDescription">Job Description</label>
+                        <textarea className="form-control" id="jobDescription" rows={3} ref={description}></textarea>
+                    </div>
+                    <div className="form-group">
+                        <label>Payment</label>
+                        <select className="form-control" ref={payment}>
+                            <option>Fixed price</option>
+                            <option>Per milestone</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="jobPeriod">Job Period</label>
+                        <input type="text" className="form-control" id="jobPeriod" placeholder="Enter job period"
+                        ref={period}/>
+                    </div>
+                    <div className="form-group col-auto">
+                        <label htmlFor="jobSalary">Job Salary</label>
+                        <div className="input-group mb-2">
+                            <div className="input-group-prepend">
+                                <div className="input-group-text">$</div>
+                            </div>
+                            <input type="number" className="form-control" id="jobSalary" placeholder="Enter job salary" min={0}
+                            ref={salary}/>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </>
+        
     )
 }
