@@ -59,7 +59,7 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
                     const subCollectionRef = collection(docRef, "userJobs");
 
                     if(docSnap.exists()) {
-                        console.log(docSnap.data());   
+                        //console.log(docSnap.data());   
                     }
 
                     else {
@@ -98,67 +98,68 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
 
     return (
         <>
-
-            {/*Repo selector*/}
-            <div className="col">
-                    <div className="card border-1">
-                        <div className="card-header">
-                            <h3 className="card-title">Your repositories</h3>
-                        </div>
-                        <button onClick={() => console.log(currentRepo)}>check</button>
-                        <div className="list-group" style={{maxHeight: "300px", overflowY:"scroll"}}>
-
-                            {repos.map((obj: object, index: Key | null | undefined): React.ReactNode => {
-                                return <Repo repository={obj} setCurrentRepo={setCurrentRepo} key={index}/>
-                            })}
-                        </div>
-                    </div>  
+    {/*Repo selector*/}
+    <div className="col d-flex flex-column mb-4">
+        <div className="card border-1 shadow flex-grow-1 d-flex flex-column">
+            <div className="card-header bg-primary text-white">
+                <h3 className="card-title">Your repositories</h3>
             </div>
+            <div className="list-group flex-grow-1 overflow-auto" style={{maxHeight: "500px"}}>
 
-            {/*Repo form*/}
-            <div className="col">
-                <h2>Repository: <a href={currentRepo?.html_url} target="_blank">{currentRepo?.name}</a></h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="jobTitle">Job Title</label>
-                        <input type="text"
-                        className="form-control form-control-lg"
-                        id="jobTitle" placeholder="Enter job title"
-                        ref={title}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="jobDescription">Job Description</label>
-                        <textarea className="form-control" id="jobDescription" rows={3} ref={description}></textarea>
-                    </div>
-                    <div className="form-group">
-                        <label>Payment</label>
-                        <select className="form-control" ref={payment}>
-                            <option>Fixed price</option>
-                            <option>Per milestone</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="jobPeriod">Job Period</label>
-                        <input type="text" className="form-control" id="jobPeriod" placeholder="Enter job period"
-                        ref={period}/>
-                    </div>
-                    <div className="form-group col-auto">
-                        <label htmlFor="jobSalary">Job Salary</label>
-                        <div className="input-group mb-2">
-                            <div className="input-group-prepend">
-                                <div className="input-group-text">$</div>
-                            </div>
-                            <input type="number" className="form-control" id="jobSalary" placeholder="Enter job salary" min={0}
-                            ref={salary}/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <button type="submit" className="btn btn-primary">Submit</button>
-                    </div>
-                </form>
+                {repos.map((obj: object, index: Key | null | undefined): React.ReactNode => {
+                    return <Repo repository={obj} setCurrentRepo={setCurrentRepo} key={index}/>
+                })}
             </div>
-        </>
+        </div>  
+    </div>
+
+    {/*Repo form*/}
+    <div className="col d-flex flex-column">
+        <div className="bg-primary text-white p-2 rounded-top">
+            <h2>Repository: <a className="text-light" href={currentRepo?.html_url} target="_blank">{currentRepo?.name}</a></h2>
+        </div>
+        <form onSubmit={handleSubmit} className="p-3 border rounded-bottom bg-light flex-grow-1 d-flex flex-column overflow-auto" style={{maxHeight: "500px"}}>
+            <div className="form-group">
+                <label htmlFor="jobTitle">Job Title</label>
+                <input type="text"
+                className="form-control form-control-lg rounded"
+                id="jobTitle" placeholder="Enter job title"
+                ref={title}
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="jobDescription">Job Description</label>
+                <textarea className="form-control rounded" id="jobDescription" rows={3} ref={description}></textarea>
+            </div>
+            <div className="form-group">
+                <label>Payment</label>
+                <select className="form-control rounded" ref={payment}>
+                    <option>Fixed price</option>
+                    <option>Per milestone</option>
+                </select>
+            </div>
+            <div className="form-group">
+                <label htmlFor="jobPeriod">Job Period</label>
+                <input type="text" className="form-control rounded" id="jobPeriod" placeholder="Enter job period"
+                ref={period}/>
+            </div>
+            <div className="form-group col-auto">
+                <label htmlFor="jobSalary">Job Salary</label>
+                <div className="input-group mb-2">
+                    <div className="input-group-prepend">
+                        <div className="input-group-text">$</div>
+                    </div>
+                    <input type="number" className="form-control rounded" id="jobSalary" placeholder="Enter job salary" min={0}
+                    ref={salary}/>
+                </div>
+            </div>
+            <div className="form-group mt-auto">
+                <button type="submit" className="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</>
+    
         
     )
 }
