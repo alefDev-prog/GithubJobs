@@ -45,87 +45,87 @@ export default function Chat() {
     }, [chatId, currentId]);
     
     if (messages) {
-        return (
-          <div className="container-fluid h-100">
-            <div className="row h-100">
+      return (
+        <div className="d-flex flex-column justify-content-between vh-100 bg-dark-subtle overflow-hidden">
+          <div className="container-fluid bg-dark-subtle overflow-auto" 
+               style={{ background: '#f5f5f5', padding: '20px', paddingTop: '60px', width: '100%', maxWidth: '768px' }}>
+            <div className="row">
               <div className="col-md-12">
-                {/* The "messaging-window" */}
-                <div
-                  className="overflow-auto h-100"
-                  style={{ background: '#f5f5f5', padding: '20px' }}
-                >
-                  {messages.map((item, index) => {
-                    if ('message' in item) {
-                      if (item.currentId === currentId) {
-                        // Message from current user
-                        return (
-                          <div key={index} className="text-end mb-3">
-                            <div className="d-flex justify-content-end">
-                              <div className="bg-primary text-white rounded p-2">
-                                <div className="d-flex align-items-center">
-                                  <p className="mb-0">{item.message}</p>
-                                  </div>
-                                  </div>
-                                {currentUser?.photoURL && (
-                                <div className="ml-2">
-                                    <Image
-                                    src={currentUser?.photoURL}
-                                    alt="Current User"
-                                    width={40}
-                                    height={40}
-                                    className="rounded-circle"
-                                    />
-                                </div>
-                                )}
-                              
-                            </div>
-                          </div>
-                        );
-                      } else {
-                        // Message from other user
-                        return (
-                          <div key={index} className="text-start mb-3">
-                            <div className="d-flex">
-                              {friend && (
-                                <div className="mr-2">
-                                  <Image
-                                    src={friend.image}
-                                    alt={friend.name}
-                                    width={40}
-                                    height={40}
-                                    className="rounded-circle"
-                                  />
-                                </div>
-                              )}
-                              <div className="bg-secondary text-white rounded p-2">
-                                <p className="mb-0">{item.message}</p>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-                    } else if ('job' in item) {
-                      // Interview message
+                {messages.map((item, index) => {
+                  if ('message' in item) {
+                    if (item.currentId === currentId) {
+                      // Message from current user
                       return (
-                        <div key={index} className="d-flex justify-content-center mb-3">
-                          <div className="bg-info text-white rounded p-2 w-100">
-                            <h5>{item.job?.title}</h5>
-                            <p>Repo Name: {item.job?.repoName}</p>
-                            <p>Repo URL: {item.job?.repoURL}</p>
-                            <p>Salary: {item.job?.salary}</p>
+                        <div key={index} className="text-end mb-3">
+                          <div className="d-flex justify-content-end">
+                            <div className="bg-primary text-white rounded p-2 text-break me-2" style={{ maxWidth: '70%' }}>
+                              <p className="mb-0">{item.message}</p>
+                            </div>
+                            {currentUser?.photoURL && (
+                              <div className="ml-2">
+                                <Image
+                                  src={currentUser?.photoURL}
+                                  alt="Current User"
+                                  width={40}
+                                  height={40}
+                                  className="rounded-circle"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      // Message from other user
+                      return (
+                        <div key={index} className="text-start mb-3">
+                          <div className="d-flex">
+                            {friend && (
+                              <div className="mr-2">
+                                <Image
+                                  src={friend.image}
+                                  alt={friend.name}
+                                  width={40}
+                                  height={40}
+                                  className="rounded-circle"
+                                />
+                              </div>
+                            )}
+                            <div className="bg-tertiary text-white rounded p-2 text-break ms-2" style={{ maxWidth: '70%' }}>
+                              <p className="mb-0">{item.message}</p>
+                            </div>
                           </div>
                         </div>
                       );
                     }
-                  })}
-                </div>
-    
+                  } else if ('job' in item) {
+                    // Interview message
+                    return (
+                      <div key={index} className="d-flex justify-content-center mb-3">
+                        <div className="bg-info text-white rounded p-2 w-100 text-break">
+                          <h5>{item.job?.title}</h5>
+                          <p>Repo Name: {item.job?.repoName}</p>
+                          <p>Repo URL: {item.job?.repoURL}</p>
+                          <p>Salary: {item.job?.salary}</p>
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="container-fluid bg-dark-subtle" 
+               style={{ background: '#f5f5f5', padding: '20px', paddingTop: '60px', width: '100%', maxWidth: '768px' }}>
+            <div className="row">
+              <div className="col-md-12">
                 {/* Message input */}
                 <Input chatId={chatId} currentId={currentId} />
               </div>
             </div>
           </div>
-        );
+        </div>
+      );
       } else {
         return <h1>Loading...</h1>;
       }
