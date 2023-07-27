@@ -17,6 +17,7 @@ export default function RootLayout({
       
       <AuthProvider>
         <body>
+          {/* @ts-expect-error Server Component */}
           <Navbar />
           {children}
         </body>

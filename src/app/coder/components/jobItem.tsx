@@ -1,13 +1,14 @@
 "use client";
 
 import { jobInfo } from "@/interfaces/interface";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function JobItem({info}: {info:jobInfo}) {
     return (
         <div className="card bg-light">
             <div className="m-2">
-                <img
+                <Image
                 src={info.publisher.image}
                 alt="User Image"
                 className="rounded-circle"
