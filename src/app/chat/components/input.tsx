@@ -31,7 +31,7 @@ export default function Input({chatId, currentId}:{chatId:string|null, currentId
             <form onSubmit={submit}>
                 <div className="input-group mb-3">
                     <input type="text" className="form-control" placeholder="Enter message..." />
-                    <button className="btn btn-primary" type="submit" id="button-addon2">Send</button>
+                    <button className="btn btn-primary text-white" type="submit" id="button-addon2">Send</button>
                 </div>
             </form>
         </div>
