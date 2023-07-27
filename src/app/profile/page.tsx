@@ -1,56 +1,30 @@
-"use client";
+import { adminSDK } from "@/firebase/admin";
+import { useEffect } from "react";
+import { cookies } from 'next/headers'
+import { jobInfo, userApplication } from "@/interfaces/interface";
+import verifyAuth from "@/authMiddleware/auth";
+import getData from "./utils/getUserData";
 
-import { useAuth } from "@/context/AuthContext";
-import { db } from "@/firebase/config";
-import { DocumentData, collection, doc, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
-
-export default function Profile() {
-
-    const currentUser = useAuth();
-    const [userData, setUserData] = useState<DocumentData | undefined | null>(null);
-
-    useEffect(() => {
-
-        async function getData() {
-            const userId = currentUser?.uid;
-        
-            
-            try {
-               
-                const docRef = doc(db, "users", userId? userId : "");
-                //const docSnap = await getDoc(docRef);
-                //const userData = docSnap.data();
-                
-                
-                
-                //fetch jobs
-                const userJobsRef = collection(docRef, "userJobs");
-                const userJobsSnap = await getDocs(userJobsRef);
-                const userJobsData = userJobsSnap.docs.map((doc) => doc.data());
-
-                //fetch applications
-                const userApplicationsRef = collection(docRef, "userApplications");
-                const userApplicationsSnap = await getDocs(userApplicationsRef);
-                const userApplicationsData = userApplicationsSnap.docs.map((doc) => doc.data());
-                
-                setUserData({
-                    jobs:userJobsData,
-                    applications: userApplicationsData
-                });
-               
-            } catch(err) {
-                console.log(err);
-            }
-            
-        }
-
-        getData();
-        
-    }, [currentUser]);
+export default async function Profile() {
 
 
-    return(
-        <button onClick={() => console.log(userData)}>Profile</button>
+    const uid = await verifyAuth();
+
+    if(typeof uid ==="string") {
+        const userData = await getData(uid) as {userJobsData: jobInfo[], userApplicationsData: userApplication[]}
+        //console.log(userData);
+        return (
+            <>
+    
+            <h1>{userData.userApplicationsData[0].coverletter}</h1>
+            </>
+    
+        )
+    }
+
+    else return (
+        <h1>Not logged in</h1>
     )
+
+    
 }
