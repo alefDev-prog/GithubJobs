@@ -8,6 +8,6 @@ export default function Repo({repository, setCurrentRepo}:{repository:any, setCu
         setCurrentRepo(repository);
     }
     return (
-        <div className="list-group-item list-group-item-action" onClick={handleClick}>{repository.name}</div>
+        <div className="list-group-item list-group-item-action bg-secondary" onClick={handleClick}>{repository.name}</div>
     )
 }
