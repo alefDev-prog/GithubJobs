@@ -52,8 +52,8 @@ export default function Notification({userName, userImage, messageCount}: {userN
 
                 <Link href="/messages">
                     <div role='button' className="mx-2">
-                        <FontAwesomeIcon icon={faBell} style={{height:"25px", color:"green"}}/>
-                        <span className="badge rounded-pill badge-notification bg-danger">{mess}</span>
+                        <FontAwesomeIcon icon={faBell} style={{height:"25px"}} className="text-primary"/>
+                        <span className="badge rounded-circle badge-notification bg-danger">{mess}</span>
 
                     </div>
                 </Link>
