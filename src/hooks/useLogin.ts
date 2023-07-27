@@ -1,8 +1,8 @@
 import { GithubAuthProvider, getIdToken, signInWithPopup } from "firebase/auth";
-import { auth, db } from "../firebase/config";
+import { auth } from "../firebase/config";
 import { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
-import { encrypt } from "@/app/crypto/funcs";
+
+
 
 
 export const useLogin = () => {

@@ -1,11 +1,6 @@
-
-
 import verifyAuth from "@/authMiddleware/auth";
 import { adminSDK } from "@/firebase/admin";
-
-
 import { jobInfo } from "@/interfaces/interface";
-import { where } from "@firebase/firestore";
 import Form from "./components/form";
 
 
