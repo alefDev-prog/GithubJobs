@@ -64,8 +64,6 @@ export default function Explorer() {
     return (
         <>
             <main className="container">
-                <button onClick={fetchJobs}>Test</button>
-                <button onClick={() => console.log(lastItem)}>Last</button>
                 <InfiniteScroll
                     dataLength={items.length}
                     next={fetchJobs}

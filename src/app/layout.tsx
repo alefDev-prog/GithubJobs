@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.css';
+import "../bootstrap/custom.scss";
 import { AuthProvider } from '@/context/AuthContext';
 import Navbar from './components/navbar';
 

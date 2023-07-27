@@ -154,7 +154,7 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
                 </div>
             </div>
             <div className="form-group mt-auto">
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary text-white">Submit</button>
             </div>
         </form>
     </div>
