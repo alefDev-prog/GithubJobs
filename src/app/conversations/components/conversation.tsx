@@ -1,6 +1,7 @@
 "use client";
 
 import { userChat } from "@/interfaces/interface";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function Conversation({conversation}: {conversation: userChat}) {
@@ -21,11 +22,13 @@ export default function Conversation({conversation}: {conversation: userChat}) {
             role="button"
         >
             <div className="row g-0">
-            <div className="col-md-3">
-                <img
+            <div className="col-md-1">
+                <Image
                 src={conversation.friend.image}
                 className="img-fluid rounded-start conversation-image"
                 alt={conversation.friend.name}
+                height={70}
+                width={70}
                 />
             </div>
             <div className="col-md-9">

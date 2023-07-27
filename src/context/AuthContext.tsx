@@ -3,7 +3,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "@/firebase/config";
 import { User, onIdTokenChanged, onAuthStateChanged } from "firebase/auth";
-import { GithubAuthProvider } from "firebase/auth";
 import Cookies from "js-cookie";
 
 
