@@ -1,0 +1,19 @@
+/* import the necessary Bootstrap files */
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+
+/* -------begin customization-------- */
+
+/* simply assign the value */
+$theme-colors: (
+  primary: #00962B ,
+  secondary: #EEEEEE,
+  light: #EEEEEE,
+  danger: red,
+);
+
+
+/* -------end customization-------- */
+
+/* finally, import Bootstrap to set the changes! */
+@import "bootstrap";
