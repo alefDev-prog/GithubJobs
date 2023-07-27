@@ -3,6 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { doc, updateDoc } from "firebase/firestore";
+import Image from "next/image";
 import { useRouter } from 'next/navigation';
 
 export default function Message({message}: {message:any}) {
@@ -30,10 +31,12 @@ export default function Message({message}: {message:any}) {
           <div className="card-body">
             <div className="row">
               <div className="col-md-2">
-                <img
+                <Image
                   src={message.applicant.image}
                   alt={message.applicant.name}
                   className="img-fluid rounded-circle"
+                  height={100}
+                  width={100}
                 />
               </div>
               <div className="col-md-10">

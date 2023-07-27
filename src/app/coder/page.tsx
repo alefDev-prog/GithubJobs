@@ -1,6 +1,9 @@
 import Explorer from "./components/explorer"
 
-export default function Coder() {
+export default async function Coder() {
+
+    
+
     return (
         <>
             <h1>Coder</h1>

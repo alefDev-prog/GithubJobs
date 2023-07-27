@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { applicationData, jobInfo, requestObject } from "@/interfaces/interface";
 import { arrayUnion, collection, doc, getDoc,setDoc, updateDoc } from "firebase/firestore";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -46,7 +47,7 @@ export default function Request() {
       }
   
       getData();
-    }, [currentUser]);
+    }, [currentUser, id]);
 
 
 
@@ -152,7 +153,11 @@ export default function Request() {
                         <h2>Applicant Information</h2>
                         <hr className="mb-4" />
                         <div className="media">
-                            <img src={jobData.applicationData.applicant.image} className="mr-3 rounded-circle" alt="Applicant Image" width="64" height="64" />
+                            <Image src={jobData.applicationData.applicant.image}
+                            className="mr-3 rounded-circle"
+                            alt="Applicant Image"
+                            width={64}
+                            height={64} />
                             <div className="media-body">
                             <h5 className="mt-0">{jobData.applicationData.applicant.name}</h5>
                             <p>{jobData.applicationData.coverletter}</p>

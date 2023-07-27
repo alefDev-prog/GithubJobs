@@ -1,9 +1,5 @@
 import { adminSDK } from "@/firebase/admin";
 import { auth } from "firebase-admin";
-import { NextApiHandler, NextApiResponse } from "next";
-import { NextRequest, NextResponse } from "next/server";
-import { Middleware } from "next-api-middleware";
-import { CustomNextRequest } from "@/interfaces/interface";
 import { cookies } from "next/headers";
 
 
