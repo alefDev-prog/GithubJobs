@@ -58,7 +58,7 @@ export default function Notification({userName, userImage, messageCount}: {userN
                     </div>
                 </Link>
                 
-                <Link href='/profile'>
+                <Link href='/'>
                     <div role='button' className="mx-2">
                         <Image 
                         src={userImage?.value}
