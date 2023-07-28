@@ -53,9 +53,6 @@ export default async function Navbar() {
               <li className="nav-item">
                 <Link className="nav-link" href="/conversations">Conversations</Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/login">Logout</Link>
-              </li>
             </ul>
           
           </div>
