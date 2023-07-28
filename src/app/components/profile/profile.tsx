@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { jobInfo, userApplication } from "@/interfaces/interface";
 import verifyAuth from "@/authMiddleware/auth";
 import getData from "./utils/getUserData";
+import Logout from "./components/logout";
 
 export default async function Profile() {
 
@@ -17,6 +18,7 @@ export default async function Profile() {
             <>
     
             <h1>{userData.userApplicationsData[0].coverletter}</h1>
+            <Logout />
             </>
     
         )
