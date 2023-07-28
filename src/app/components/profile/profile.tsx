@@ -1,6 +1,3 @@
-import { adminSDK } from "@/firebase/admin";
-import { useEffect } from "react";
-import { cookies } from 'next/headers'
 import { jobInfo, userApplication } from "@/interfaces/interface";
 import verifyAuth from "@/authMiddleware/auth";
 import getData from "./utils/getUserData";
