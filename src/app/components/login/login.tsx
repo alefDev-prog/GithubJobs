@@ -1,7 +1,6 @@
 "use client";
-import { useAuth } from "@/context/AuthContext";
+
 import {useLogin} from "@/hooks/useLogin";
-import { useLogout } from "@/hooks/useLogout";
 import Image from "next/image";
 
 
@@ -12,7 +11,7 @@ export default function Login() {
 
     async function handleLogin() {
         await login();
-        window.location.reload();
+        //window.location.reload();
     }
     
     
