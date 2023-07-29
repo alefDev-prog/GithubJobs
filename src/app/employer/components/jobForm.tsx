@@ -1,11 +1,10 @@
 "use client";
 
-import { addDoc, collection, doc, getDoc,setDoc} from "firebase/firestore";
+import { collection, doc, setDoc, serverTimestamp} from "firebase/firestore";
 import { FormEvent, Key, useRef, useState } from "react";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/AuthContext";
 import { repoInfo } from "@/interfaces/interface";
-import { serverTimestamp } from "firebase/firestore";
 import Repo from "./repo";
 
 
@@ -20,8 +19,6 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
     const salary = useRef<HTMLInputElement|null>(null);
 
     
-    const userCollection = collection(db, "users");
-    
     const currentUser = useAuth();
 
 
@@ -30,7 +27,7 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
 
         if(!currentRepo || !currentUser) return;
         
-        const timeStamp = new Date();
+    
         
         const doneRepo: repoInfo = {
             name: currentRepo.name,
@@ -55,19 +52,8 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
 
                 if(userId){
                     const docRef = doc(db, "users", userId);
-                    const docSnap = await getDoc(docRef);
-                    const subCollectionRef = collection(docRef, "userJobs");
-
-                    if(docSnap.exists()) {
-                        //console.log(docSnap.data());   
-                    }
-
-                    else {
-                        await setDoc(doc(userCollection, userId), {
-                            name: currentUser?.displayName || currentUser?.providerData[0].displayName
-                        });   
-                    }
                     
+                    const subCollectionRef = collection(docRef, "userJobs");
 
                     const jobDoc = doc(subCollectionRef);
                     const jobOffering = {
