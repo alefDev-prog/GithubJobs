@@ -1,4 +1,4 @@
-import { jobInfo, userApplication } from "@/interfaces/interface";
+import { githubData, jobInfo, userApplication } from "@/interfaces/interface";
 import verifyAuth from "@/authMiddleware/auth";
 import getData from "./utils/getUserData";
 import Logout from "./components/logout";
@@ -10,8 +10,10 @@ export default async function Profile() {
     const uid = await verifyAuth();
 
     if(typeof uid ==="string") {
-        const userData = await getData(uid) as {userJobsData: jobInfo[], userApplicationsData: userApplication[]};
-        console.log(await getGithubData())
+        const userData = await getData(uid) as {userJobsData: jobInfo[],
+            userApplicationsData: userApplication[],
+            githubData: githubData};
+        console.log(userData)
         return (
             <>
     

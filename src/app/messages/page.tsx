@@ -8,6 +8,8 @@ import Message from "./components/messages";
 
 export default function Messages() {
     const currentUser = useAuth();
+
+    
     
     const [messages, setMessages] = useState<DocumentData | undefined | null>(null);
 
