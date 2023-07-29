@@ -30,7 +30,10 @@ const letter = useRef<HTMLTextAreaElement | null>(null);
             
 
             const applicantInfo = {
-            jobId: currentJob?.id,
+            job: {
+              id: currentJob.id,
+              title: currentJob.title
+            },
             coverletter: letter.current?.value,
             }
 

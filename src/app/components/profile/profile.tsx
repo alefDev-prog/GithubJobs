@@ -14,7 +14,7 @@ export default async function Profile() {
         return (
             <>
     
-            <h1>{userData.userApplicationsData[0].coverletter}</h1>
+            <h1>{userData.userApplicationsData[0]?.coverletter}</h1>
             <Logout />
             </>
     
