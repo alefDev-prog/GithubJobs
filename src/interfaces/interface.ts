@@ -109,5 +109,8 @@ export interface CustomNextRequest extends NextRequest {
 
 export interface userApplication {
     coverletter: string,
-    jobId: string
+    job: {
+        id: string,
+        title: string
+    }
 }
