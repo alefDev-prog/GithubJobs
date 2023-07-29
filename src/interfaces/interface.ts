@@ -114,3 +114,13 @@ export interface userApplication {
         title: string
     }
 }
+
+export interface githubData {
+    name: string,
+    followers: number,
+    following: number,
+    location: string,
+    email: string,
+    url: string,
+    image: string
+}
