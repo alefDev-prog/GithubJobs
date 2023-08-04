@@ -109,5 +109,61 @@ export interface CustomNextRequest extends NextRequest {
 
 export interface userApplication {
     coverletter: string,
-    jobId: string
+    job: {
+        id: string,
+        title: string
+    }
+}
+
+export interface githubData {
+    name: string,
+    followers: number,
+    following: number,
+    location: string,
+    email: string,
+    url: string,
+    image: string
+}
+
+export interface userData {
+    githubData: {
+        name: string,
+        followers: number,
+        following: number,
+        location: string,
+        email: string,
+        url: string,
+        image: string
+    },
+    userApplication: {
+        coverletter: string,
+        job: {
+            id: string,
+            title: string
+        }
+    }[],
+    jobInfo: {
+        createdAt: Date;
+        description: string;
+        payment: string;
+        period: string;
+        //applications: applicationData[]
+        publisher: {
+            name: string,
+            image: string,
+            userId: string
+        };
+        
+        repository: {
+            html_url: string;
+            language: string;
+            name: string;
+            private: boolean;
+            stargazers_count: number;
+        };
+        
+        salary: string;
+        title: string;
+        id: string
+    }
 }

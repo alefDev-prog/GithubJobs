@@ -1,5 +1,5 @@
 import { adminSDK } from "@/firebase/admin";
-import { jobInfo, userApplication } from "@/interfaces/interface";
+import { githubData, jobInfo, userApplication } from "@/interfaces/interface";
 
 export default async function getData(uid: string) {
     try {
@@ -12,19 +12,27 @@ export default async function getData(uid: string) {
 
             let userJobsData:jobInfo[]  = [];
             let userApplicationsData:userApplication[]  = [];
+            let githubData:any;
 
-            await userJobsRef.get().then(snapshot => {
+            let userJobsPromise = userJobsRef.get().then(snapshot => {
                 snapshot.forEach(doc => {
-                  userJobsData.push(doc.data() as jobInfo);
+                    userJobsData.push(doc.data() as jobInfo);
                 });
-              });
-
-            await userApplicationsRef.get().then(snapshot => {
+            });
+            
+            let userApplicationsPromise = userApplicationsRef.get().then(snapshot => {
                 snapshot.forEach(doc => {
                     userApplicationsData.push(doc.data() as userApplication);
                 });
             });
-            return {userJobsData, userApplicationsData}
+            
+            let githubDocPromise = userRef.get().then(snapshot => {githubData = snapshot.data()});
+            
+            await Promise.all([userJobsPromise, userApplicationsPromise, githubDocPromise]);
+            
+            
+            //const githubData = githubDoc.data();
+            return {userJobsData, userApplicationsData, githubData}
             
         }
 

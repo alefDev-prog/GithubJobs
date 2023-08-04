@@ -31,7 +31,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         });
 
         //set cookie for Github accessToken
-        const accessToken = await req.json();
+        const reqBody = await req.json();
+        const accessToken = reqBody.accessToken;
         nextResponse.cookies.set({
           name: 'accessToken',
           value: accessToken,
@@ -39,8 +40,32 @@ export async function POST(req: NextRequest, res: NextResponse) {
           secure: true,
           maxAge: expiresIn
       });
-  
-        return nextResponse;
+
+
+      //github-information about the user to DB
+      const Octokit = (await import('@octokit/rest')).Octokit
+      const octokit = new Octokit({ 
+        auth: accessToken
+      });
+
+      const response = await octokit.rest.users.getAuthenticated();
+      const userData = response.data;
+      const dataToSend = {
+        name: userData.name,
+        followers: userData.followers,
+        following: userData.following,
+        location: userData.location,
+        email: userData.email,
+        url: userData.html_url,
+        image: userData.avatar_url
+      }
+
+
+      const db = adminSDK.firestore();
+      const userId = reqBody.uid;
+
+      db.collection('users').doc(userId).set(dataToSend);
+      return nextResponse;
       }
     }
     return NextResponse.json({message: "Unauthorized"}, {status: 401});
