@@ -20,10 +20,16 @@ export default async function verifyAuth() {
   //The original cookie needs to be modified because it contains quotation marks which ruin the verification
   
 
-
-  const {uid} = await auth().verifySessionCookie(sessionCookie, true);
-  if (!uid) {
-    return new Error("invalid cookie")
+  try {
+    const {uid} = await auth().verifySessionCookie(sessionCookie, true);
+    if (!uid) {
+      return new Error("invalid cookie")
+    }
+    return uid;
+  } catch(err) {
+    return err;
   }
-  return uid;
+ 
+  
+ 
 }
