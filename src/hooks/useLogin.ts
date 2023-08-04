@@ -1,6 +1,9 @@
 import { GithubAuthProvider, getIdToken, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase/config";
+import { auth} from "../firebase/config";
 import { useState } from "react";
+import { collection, doc, getDoc, setDoc, updateDoc } from "@firebase/firestore";
+import { db } from "@/firebase/config";
+
 
 
 
@@ -17,7 +20,6 @@ export const useLogin = () => {
 
     try {
       const res = await signInWithPopup(auth, provider);
-      console.log(res);
       if (!res) {
         throw new Error("Could not complete signup");
       }
@@ -27,17 +29,15 @@ export const useLogin = () => {
       
       if (auth.currentUser && accessToken) {
         //get id token for later server side fetching
+        const uid = auth.currentUser.uid;
         const idToken = await getIdToken(auth.currentUser);
         const loginResp = await fetch("/api/login", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${idToken}`
           },
-          body: JSON.stringify(accessToken)
-        });
-        console.log(await loginResp.json());
-        
-
+          body: JSON.stringify({accessToken, uid})
+        })
         
 
       }

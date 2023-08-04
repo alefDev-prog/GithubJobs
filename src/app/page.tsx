@@ -14,7 +14,7 @@ export default function Home() {
   
   const nextCookies = cookies();
   const token = nextCookies.get('loggedIn'); 
-
+  
   if(token) {
       return <DynamicProfile />
   }
