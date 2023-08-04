@@ -20,49 +20,28 @@ export default async function Navbar() {
     
   }
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      
-        <div className="container-fluid">
-      
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-mdb-toggle="collapse"
-            data-mdb-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i className="fas fa-bars"></i>
-          </button>
+      <nav className="navbar navbar-light bg-light">
+  <div className="container-fluid">
+    <a className="navbar-brand mt-2 mt-lg-0" href="#">
+      {/* Room for logo */}
+    </a>
+    <ul className="navbar-nav me-auto mb-2 mb-lg-0" style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+      <li className="nav-item">
+        <Link className="nav-link" href="/employer">Offer jobs</Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" href="/coder">Explore</Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" href="/conversations">Conversations</Link>
+      </li>
+    </ul>
+    {token && <Notification userImage={userImage} userName={userName} messageCount={messageCount} />}
+  </div>
+</nav>
 
-      
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            
-            <a className="navbar-brand mt-2 mt-lg-0" href="#">
-              {/* Room for logo */}
-            </a>
-          
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link className="nav-link" href="/employer">Offer jobs</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/coder">Explore</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/conversations">Conversations</Link>
-              </li>
-            </ul>
-          
-          </div>
+    
 
-          {token && <Notification userImage={userImage} userName={userName} messageCount={messageCount}/>}
-      
-  
-        </div>
-        
-      </nav>
     )
   
 }
