@@ -4,6 +4,8 @@ import getData from "./utils/getUserData";
 import Logout from "./components/logout";
 import Image from "next/image";
 import Link from "next/link";
+import JobCard from "./components/jobcard";
+import ApplicationCard from "./components/applicationcard";
 
 
 export default async function Profile() {
@@ -17,7 +19,7 @@ export default async function Profile() {
             userApplicationsData: userApplication[],
             githubData: githubData
         };
-        console.log(userData.githubData.followers);
+        //console.log(userData.githubData.followers);
         return (
             <div className="container-fluid">
     <div className="row justify-content-evenly">
@@ -39,27 +41,11 @@ export default async function Profile() {
         </div>
         <div className="col-lg-5 col-md-6 col-sm-12 mt-3 mb-3 border bg-secondary rounded">
             <h3>Jobs Published</h3>
-            {userData.userJobsData.slice(0, 5).map((job, index) => (
-                <div className="card mt-3 flex-grow-1" key={index}>
-                    <div className="card-body">
-                        <h5 className="card-title text-primary">{job.title}</h5>
-                        <p className="card-text">Description: {job.description.substring(0, 150)}</p>
-                        <p className="card-text">Payment: {job.payment}</p>
-                        <p className="card-text">Period: {job.period}</p>
-                    </div>
-                </div>
-            ))}
+            <JobCard jobs={userData.userJobsData} />
         </div>
         <div className="col-lg-3 col-md-12 mt-3 mb-3 border bg-secondary rounded">
             <h3>Job Applications</h3>
-            {userData.userApplicationsData.slice(0, 5).map((application, index) => (
-                <div className="card mt-3 flex-grow-1" key={index}>
-                    <div className="card-body">
-                        <h5 className="card-title text-primary">{application.job.title}</h5>
-                        <p className="card-text">Cover letter: {application.coverletter.substring(0,100)}... <a href="#">Read more</a></p>
-                    </div>
-                </div>
-            ))}
+            <ApplicationCard apps={userData.userApplicationsData} />
         </div>
     </div>
 </div>
