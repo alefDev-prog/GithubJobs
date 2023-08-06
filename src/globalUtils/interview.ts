@@ -1,11 +1,10 @@
-import { useAuth } from "@/context/AuthContext";
+
 import { db } from "@/firebase/config";
-import getJob from "@/globalUtils/getJob";
-import { applicationData, jobInfo, requestObject } from "@/interfaces/interface";
-import { arrayUnion, collection, doc, getDoc,setDoc, updateDoc } from "firebase/firestore";
-import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+
+import { applicationData, jobInfo } from "@/interfaces/interface";
+import { arrayRemove, arrayUnion, collection, doc, getDoc,setDoc, updateDoc } from "firebase/firestore";
+
+
 
 export default async function interview(jobData: {jobInfo: jobInfo, applicationData: applicationData}, currentUser: any) {
    
@@ -72,7 +71,33 @@ export default async function interview(jobData: {jobInfo: jobInfo, applicationD
                 });
             }
 
-            //sending user to chatt
+            /*
+            update db to state that the applicant is being interviewed
+            this is a temporary solution which firstly removes the object from array
+            and then inserts a modified object.
+            The final solution shall involve a subcollection of applications, rather than an array
+
+            */
+
+            await updateDoc(doc(db,"users", userId, "userJobs", jobData.jobInfo.id), {
+                applications: arrayRemove(jobData.applicationData)
+            });
+            const updatedApplication = jobData.applicationData;
+            updatedApplication.interview = true;
+            await updateDoc(doc(db,"users", userId, "userJobs", jobData.jobInfo.id), {
+                applications: arrayUnion(updatedApplication)
+            });
+
+
+            //update applicant's db to let them know they are being interviewed
+            await updateDoc(doc(db, "users", jobData.applicationData.applicant.id, "userApplications", jobData.applicationData.id), {
+                interview: true
+            });
+
+
+
+
+            
             return combinedId
             //push(`/chat?chatid=${combinedId}`)
 
