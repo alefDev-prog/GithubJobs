@@ -46,7 +46,8 @@ export interface applicationData {
     },
     coverletter: string,
     id: string,
-    jobId: string
+    jobId: string,
+    interview?: boolean
 }
 
 export interface requestObject {
@@ -80,7 +81,8 @@ export interface requestObject {
             name: string
         },
         coverletter: string,
-        jobId: string
+        jobId: string,
+        interview?: boolean
     }
     
 }
@@ -140,7 +142,8 @@ export interface userData {
         job: {
             id: string,
             title: string
-        }
+        },
+        interview?: boolean
     }[],
     jobInfo: {
         createdAt: Date;

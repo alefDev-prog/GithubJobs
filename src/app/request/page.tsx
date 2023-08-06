@@ -25,7 +25,7 @@ export default async function Request({searchParams}: {searchParams?: { [key: st
     }
 
     //filter to get to the correct application 
-    let applicationData: applicationData;
+    let applicationData = {} as  applicationData;
     jobInfo.applications.forEach((app: applicationData) => {
         if(app.id === appId) {
             applicationData = app;
@@ -76,7 +76,8 @@ export default async function Request({searchParams}: {searchParams?: { [key: st
             </div>
             <div className="row">
                 <div className="col-md-12">
-                <Interview jobData={jobData} />
+                    {!applicationData.interview === true && <Interview jobData={jobData} />}
+                
                 </div>
             </div>
             </div>
