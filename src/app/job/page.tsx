@@ -4,12 +4,9 @@ export default async function Job({searchParams}: {searchParams?: { [key: string
     
     const jobId = searchParams?.id as string;
 
-    try {
-        const job = await getJob(jobId);
-        console.log(job);
-    } catch(error) {
-        console.log(error);
-    }
+    
+    const job = await getJob(jobId);
+    if(job instanceof Error) return <h1>Error</h1>
 
     return (
         <h1>Job</h1>
