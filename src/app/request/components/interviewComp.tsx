@@ -15,6 +15,6 @@ export default function Interview({jobData}: {jobData: {jobInfo: jobInfo, applic
     }
 
     return (
-        <button className="btn btn-primary" onClick={handleClick}>Start Interview</button>
+        <button className="btn btn-primary text-white" onClick={handleClick}>Start Interview</button>
     )
 }
