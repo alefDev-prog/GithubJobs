@@ -114,7 +114,8 @@ export interface userApplication {
     job: {
         id: string,
         title: string
-    }
+    },
+    id: string
 }
 
 export interface githubData {
@@ -143,7 +144,8 @@ export interface userData {
             id: string,
             title: string
         },
-        interview?: boolean
+        interview?: boolean,
+        id: string
     }[],
     jobInfo: {
         createdAt: Date;
