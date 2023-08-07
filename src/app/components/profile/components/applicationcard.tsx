@@ -1,6 +1,7 @@
 "use client";
 
-import { jobInfo, userApplication } from "@/interfaces/interface";
+import { userApplication } from "@/interfaces/interface";
+import Link from "next/link";
 import { useState } from "react";
 
 
@@ -17,7 +18,7 @@ export default function ApplicationCard({apps}: {apps: userApplication[]}) {
             {items.map((app: userApplication, index:number) => (
                 <div className="card mt-3 flex-grow-1" key={index}>
                     <div className="card-body">
-                        <h5 className="card-title text-primary">{app.job.title}</h5>
+                    <Link href={{pathname:"/application", query:{ jobId: app.job.id, appId: app.id}}} className="link-underline-primary"><h5 className="card-title text-primary">{app.job.title}</h5></Link>
                         {
                         app.coverletter.length > 50 
                         ? <p className="card-text">Cover letter: {app.coverletter.substring(0,50)} . . .</p>
