@@ -28,8 +28,8 @@ export default async function Job({searchParams}: {searchParams?: { [key: string
               <ul className="list-group">
                 <li className="list-group-item">Payment: {job.payment}</li>
                 <li className="list-group-item">Period: {job.period}</li>
-                <li className="list-group-item">Salary: {job.salary}</li>
-                <Remove jobId={jobId} />
+                <li className="list-group-item">Salary: ${job.salary}</li>
+                <Remove job={job} />
               </ul>
               
             </div>
