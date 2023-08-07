@@ -35,6 +35,7 @@ const letter = useRef<HTMLTextAreaElement | null>(null);
               title: currentJob.title
             },
             coverletter: letter.current?.value,
+            id: jobDoc.id
             }
 
 
