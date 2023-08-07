@@ -28,31 +28,33 @@ export default function Message({message}: {message:any}) {
       <div
           className={`card mb-3 ${message.viewed ? 'viewed' : 'bg-info-subtle'}`}
           onClick={handleClick}>
-          <div className="card-body">
-            <div className="row">
-              <div className="col-md-2">
-                <Image
-                  src={message.applicant.image}
-                  alt={message.applicant.name}
-                  className="img-fluid rounded-circle"
-                  height={100}
-                  width={100}
-                />
-              </div>
-              <div className="col-md-10">
+            {message.type === "Application" && 
+            <div className="card-body">
+              <div className="row">
+                <div className="col-md-2">
+                  <Image
+                    src={message.applicant.image}
+                    alt={message.applicant.name}
+                    className="img-fluid rounded-circle"
+                    height={100}
+                    width={100}
+                  />
+                </div>
+                <div className="col-md-10">
+                  
+                  
+                    <>
+                      <p className="card-text-body-emphasis">Job application</p>
+                      <p className="card-text">Job: {message.job.title}</p>
+                      <p className="card-text">Applicant: {message.applicant.name}</p>
+                    </>
+                  
                 
-                {message.type === "Application" && 
-                  <>
-                    <p className="card-text-body-emphasis">Job application</p>
-                    <p className="card-text">Job: {message.job.title}</p>
-                    <p className="card-text">Applicant: {message.applicant.name}</p>
-                  </>
-                }
-                
-              
+            
+                </div>
               </div>
             </div>
-          </div>
+          }
         </div>
   )
 }
