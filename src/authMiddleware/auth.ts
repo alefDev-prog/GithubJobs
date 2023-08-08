@@ -15,11 +15,6 @@ export default async function verifyAuth() {
     return new Error("no cookie")
   }
   
-  // Use sessionCookie.value, which is a string, instead of the whole sessionCookie object
-
-  //The original cookie needs to be modified because it contains quotation marks which ruin the verification
-  
-
   try {
     const {uid} = await auth().verifySessionCookie(sessionCookie, true);
     if (!uid) {

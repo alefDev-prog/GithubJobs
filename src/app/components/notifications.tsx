@@ -10,7 +10,7 @@ import Link from "next/link";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import Image from "next/image";
 
-export default function Notification({userName, userImage, messageCount}: {userName: RequestCookie|undefined, userImage: RequestCookie|undefined, messageCount: number}) {
+export default function Notification({userName, userImage, messageCount}: {userName: string, userImage: string, messageCount: number}) {
 
     const currentUser = useAuth();
     const userId = currentUser?.uid;
@@ -42,13 +42,13 @@ export default function Notification({userName, userImage, messageCount}: {userN
           
     }, [currentUser]);
 
-    if(userName && userImage?.value) {
+    if(userName && userImage) {
     return(
 
         <div className="d-flex align-items-center">
             
 
-                <h1 className="mx-4 fs">{userName?.value}</h1>
+                <h1 className="mx-4 fs">{userName}</h1>
 
                 <Link href="/messages">
                     <div role='button' className="mx-2">
@@ -61,7 +61,7 @@ export default function Notification({userName, userImage, messageCount}: {userN
                 <Link href='/'>
                     <div role='button' className="mx-2">
                         <Image 
-                        src={userImage?.value}
+                        src={userImage}
                         height={25}
                         width={25}
                         alt="User image"
