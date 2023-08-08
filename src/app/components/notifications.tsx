@@ -76,7 +76,5 @@ export default function Notification({userName, userImage, messageCount}: {userN
             </div>
     )
 
-    } else return (
-        <h1>Error</h1>
-    )
+    } else return <h1></h1>
 }

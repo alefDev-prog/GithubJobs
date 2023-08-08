@@ -11,7 +11,7 @@ export default function Login() {
 
     async function handleLogin() {
         await login();
-        //window.location.reload();
+        window.location.reload();
     }
     
     
@@ -19,7 +19,7 @@ export default function Login() {
     
 
     return (
-        <main className="container container-primary text-center py-5 d-flex flex-column justify-content-center vh-100">
+        <main className="container container-primary text-center py-5 d-flex flex-column vh-100">
         <div className="bg-primary text-white p-5 rounded-top">
             <h1>Github Jobs</h1>
             <h3 className="mb-4 text-black">Upload jobs, apply for jobs, all with Github Jobs</h3>

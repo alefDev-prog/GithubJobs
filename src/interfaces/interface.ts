@@ -13,7 +13,12 @@ export interface jobInfo {
     description: string;
     payment: string;
     period: string;
-    applications: applicationData[]
+    applications: applicationData[];
+    assignee?: {
+        name:string,
+        image:string,
+        id: string,
+    };
     publisher: {
         name: string,
         image: string,
