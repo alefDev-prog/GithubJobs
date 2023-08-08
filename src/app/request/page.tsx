@@ -4,6 +4,7 @@ import { applicationData, jobInfo} from "@/interfaces/interface";
 
 import Image from "next/image";
 import Interview from "./components/interviewComp";
+import Assign from "./components/assignComp";
 
 
 
@@ -77,7 +78,7 @@ export default async function Request({searchParams}: {searchParams?: { [key: st
             <div className="row">
                 <div className="col-md-12">
                     {!applicationData.interview === true && <Interview jobData={jobData} />}
-                
+                    {!jobData.jobInfo.assignee && <Assign jobData={jobData}/>}
                 </div>
             </div>
             </div>

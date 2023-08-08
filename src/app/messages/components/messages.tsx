@@ -41,19 +41,34 @@ export default function Message({message}: {message:any}) {
                   />
                 </div>
                 <div className="col-md-10">
-                  
-                  
                     <>
                       <p className="card-text-body-emphasis">Job application</p>
                       <p className="card-text">Job: {message.job.title}</p>
                       <p className="card-text">Applicant: {message.applicant.name}</p>
                     </>
-                  
-                
-            
                 </div>
               </div>
             </div>
+          }
+          {message.type === "Assigned" &&
+            <div className="card-body">
+            <div className="row">
+              <div className="col-md-2">
+                <Image
+                  src={message.job.publisher.image}
+                  alt={message.job.publisher.name}
+                  className="img-fluid rounded-circle"
+                  height={100}
+                  width={100}
+                />
+              </div>
+              <div className="col-md-10">
+                  <>
+                    <p className="card-text-body-emphasis">You have been assigned <p className="text-primary">{message.job.title}</p></p>
+                  </>
+              </div>
+            </div>
+          </div>
           }
         </div>
   )
