@@ -87,7 +87,7 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
         <>
     {/*Repo selector*/}
     <div className="col d-flex flex-column mb-4">
-        <div className="card border-1 shadow flex-grow-1 d-flex flex-column">
+        <div className="card border-1  flex-grow-1 d-flex flex-column">
             <div className="card-header bg-primary text-white">
                 <h3 className="card-title">Your repositories</h3>
             </div>
