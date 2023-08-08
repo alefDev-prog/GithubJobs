@@ -33,7 +33,7 @@ export default function Assign({jobData}: {jobData: {jobInfo: jobInfo, applicati
             setDoc(applicantDoc, jobData.jobInfo),
             setDoc(messagesDoc, messageData),
             updateDoc(doc(db, "users", jobData.jobInfo.publisher.userId, "userJobs", jobData.jobInfo.id), {
-                assigne: {
+                assignee: {
                     name: jobData.applicationData.applicant.name,
                     image: jobData.applicationData.applicant.image,
                     id: jobData.applicationData.applicant.id

@@ -63,6 +63,7 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
                         payment: payment.current.value,
                         period: period.current.value,
                         salary: salary.current.value,
+                        assignee: null,
                         publisher: userInfo,
                         createdAt: serverTimestamp(),
                         id: jobDoc.id,
