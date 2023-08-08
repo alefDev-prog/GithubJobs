@@ -15,7 +15,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   
       if (decodedToken) {
         // Generate session cookie
-        const expiresIn = 60 * 60 * 24 * 5 * 1000;
+        const expiresIn = 60 * 60 * 24 * 13 * 1000;
         const sessionCookie = await auth().createSessionCookie(idToken, { expiresIn: expiresIn  });
     
         
@@ -42,30 +42,48 @@ export async function POST(req: NextRequest, res: NextResponse) {
       });
 
 
-      //github-information about the user to DB
-      const Octokit = (await import('@octokit/rest')).Octokit
-      const octokit = new Octokit({ 
-        auth: accessToken
+        //github-information about the user to DB
+        const Octokit = (await import('@octokit/rest')).Octokit
+        const octokit = new Octokit({ 
+          auth: accessToken
+        });
+
+        const response = await octokit.rest.users.getAuthenticated();
+        const userData = response.data;
+        const dataToSend = {
+          name: userData.name,
+          followers: userData.followers,
+          following: userData.following,
+          location: userData.location,
+          email: userData.email,
+          url: userData.html_url,
+          image: userData.avatar_url
+        }
+
+        const userDataCookie = {
+          name: userData.name,
+          image: userData.avatar_url,
+          url: userData.html_url,
+
+        }
+        const userDataString = JSON.stringify(userDataCookie);
+        nextResponse.cookies.set({
+          name: 'userData',
+          value: userDataString,
+          httpOnly: true,
+          secure: true,
+          maxAge: expiresIn
       });
 
-      const response = await octokit.rest.users.getAuthenticated();
-      const userData = response.data;
-      const dataToSend = {
-        name: userData.name,
-        followers: userData.followers,
-        following: userData.following,
-        location: userData.location,
-        email: userData.email,
-        url: userData.html_url,
-        image: userData.avatar_url
-      }
+
+        
 
 
-      const db = adminSDK.firestore();
-      const userId = reqBody.uid;
+        const db = adminSDK.firestore();
+        const userId = reqBody.uid;
 
-      db.collection('users').doc(userId).set(dataToSend);
-      return nextResponse;
+        db.collection('users').doc(userId).set(dataToSend);
+        return nextResponse;
       }
     }
     return NextResponse.json({message: "Unauthorized"}, {status: 401});

@@ -18,9 +18,12 @@ export default function Message({message}: {message:any}) {
 
     }
 
-    if(message.type == "Application") {
-      console.log(message.applicationId);
+    if(message.type === "Application") {
       push(`/request?id=${message.job.id}|${message.applicationId}`);
+    }
+
+    if(message.type === "Assigned") {
+      
     }
   }
   

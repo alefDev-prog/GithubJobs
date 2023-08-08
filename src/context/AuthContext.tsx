@@ -18,10 +18,7 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
           setCurrentUser(user as User);
 
           if(user) {
-            Cookies.set('loggedIn', "loggedIn", {expires: 10});
-            if(user?.photoURL) Cookies.set("user-image", user?.photoURL);
-            if(user?.displayName) Cookies.set("user-name", user?.displayName);
-            else if(auth.currentUser?.providerData[0].displayName) Cookies.set("user-name", auth.currentUser?.providerData[0].displayName);
+            Cookies.set('loggedIn', "loggedIn", {expires: 12});
           }
           else {
             Cookies.remove('loggedIn');

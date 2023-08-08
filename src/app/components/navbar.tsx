@@ -6,11 +6,17 @@ import Image from "next/image";
 
 
 export default async function Navbar() {
-    
-  const nextCookies = cookies();
-  const userImage = nextCookies.get('user-image');
-  const userName = nextCookies.get('user-name');
-  const token = nextCookies.get('loggedIn'); 
+  const cookieStore = cookies()
+  const userCookie = cookieStore.get('userData')?.value as string;
+  
+  const userData = JSON.parse(userCookie);
+  const userImage = userData.image;
+  const userName = userData.name;
+
+ 
+  const token = cookieStore.get('loggedIn'); 
+  
+
   let messageCount: number = 0;
 
   if(token) {
