@@ -45,7 +45,11 @@ export default async function Job({searchParams}: {searchParams?: { [key: string
               </div>
             </div>
           </div>
-          <div className="row mt-5">
+
+
+          {
+          job.assignee === null? 
+            <div className="row mt-5">
             <div className="col-12">
               <h2 className="text-center mb-4">Applications</h2>
               {job.applications.length > 0 ? (
@@ -66,6 +70,21 @@ export default async function Job({searchParams}: {searchParams?: { [key: string
               )}
             </div>
           </div>
+        : 
+        <div className="row mt-5">
+          <div className="col-12">
+            <h4 className="mb-3 text-primary">Assigned:</h4>
+            <div className="card">
+              <div className="card-body d-flex align-items-center">
+                <Image src={job.assignee.image} className="img-fluid rounded-circle d-inline me-4" alt="Assignee" height={70} width={70}/>
+                <h5 className="card-text">{job.assignee.name}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        }
+          
         </div>
       );
     
