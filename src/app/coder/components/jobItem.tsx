@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function JobItem({info}: {info:jobInfo}) {
     return (
-        <div className="card bg-light">
+        <div className="card mt-3">
             <div className="m-2">
                 <Image
                 src={info.publisher.image}
@@ -19,7 +19,7 @@ export default function JobItem({info}: {info:jobInfo}) {
             </div>
             
             <div className="card-body text-center">
-                <Link href={{pathname:"/jobs", query:{ id: info.id}}}><h5 className="card-title">{info.title}</h5></Link>
+                <Link href={{pathname:"/jobs", query:{ id: info.id}}} className="link-underline-primary"><h5 className="card-title text-primary">{info.title}</h5></Link>
                 <p className="card-text text-muted">
                     <strong>Period:</strong> {info.period}
                 </p>
