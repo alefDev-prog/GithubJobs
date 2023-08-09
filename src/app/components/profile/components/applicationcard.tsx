@@ -13,6 +13,15 @@ export default function ApplicationCard({apps}: {apps: userApplication[]}) {
     function showMore() {
         setItems(apps);
     }
+
+
+    if(items.length === 0) {
+        return (
+            <p className="mt-3">You have made no applications</p>
+        )
+    } 
+
+
     return (
         <>
             {items.map((app: userApplication, index:number) => (

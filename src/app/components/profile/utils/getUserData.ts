@@ -9,9 +9,11 @@ export default async function getData(uid: string) {
 
             const userJobsRef = userRef.collection('userJobs');
             const userApplicationsRef = userRef.collection('userApplications');
+            const currentJobsRef = userRef.collection('currentJobs');
 
             let userJobsData:jobInfo[]  = [];
             let userApplicationsData:userApplication[]  = [];
+            let currentJobsData: jobInfo[] = [];
             let githubData:any;
 
             let userJobsPromise = userJobsRef.get().then(snapshot => {
@@ -25,14 +27,19 @@ export default async function getData(uid: string) {
                     userApplicationsData.push(doc.data() as userApplication);
                 });
             });
+            let currentJobsPromise = currentJobsRef.get().then(snapshot => {
+                snapshot.forEach(doc => {
+                    currentJobsData.push(doc.data() as jobInfo);
+                });
+            });
             
             let githubDocPromise = userRef.get().then(snapshot => {githubData = snapshot.data()});
             
-            await Promise.all([userJobsPromise, userApplicationsPromise, githubDocPromise]);
+            await Promise.all([userJobsPromise, userApplicationsPromise,currentJobsPromise, githubDocPromise]);
             
             
             //const githubData = githubDoc.data();
-            return {userJobsData, userApplicationsData, githubData}
+            return {userJobsData, userApplicationsData, currentJobsData, githubData}
             
         }
 
