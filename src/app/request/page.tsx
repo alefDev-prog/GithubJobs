@@ -5,6 +5,7 @@ import { applicationData, jobInfo} from "@/interfaces/interface";
 import Image from "next/image";
 import Interview from "./components/interviewComp";
 import Assign from "./components/assignComp";
+import Link from "next/link";
 
 
 
@@ -49,7 +50,7 @@ export default async function Request({searchParams}: {searchParams?: { [key: st
                     <p><strong>Payment:</strong> {jobData.jobInfo.payment}</p>
                     <p><strong>Period:</strong> {jobData.jobInfo.period}</p>
                     <p><strong>Publisher:</strong> {jobData.jobInfo.publisher.name}</p>
-                    <p><strong>Repository:</strong> <a href={jobData.jobInfo.repository.html_url} target="_blank">{jobData.jobInfo.repository.name}</a></p>
+                    <p><strong>Repository:</strong> <Link href={jobData.jobInfo.repository.html_url} target="_blank" className="link-underline-primary text-primary">{jobData.jobInfo.repository.name}</Link></p>
                     <p className="mb-0"><strong>Language:</strong> {jobData.jobInfo.repository.language}</p>
                     <p><strong>Salary:</strong> ${jobData.jobInfo.salary}</p>
                     </div>
@@ -67,8 +68,11 @@ export default async function Request({searchParams}: {searchParams?: { [key: st
                         width={64}
                         height={64} />
                         <div className="media-body">
-                        <h5 className="mt-0">{jobData.applicationData.applicant.name}</h5>
-                        <p>{jobData.applicationData.coverletter}</p>
+                            <Link href={jobData.applicationData.applicant.githubURL || "#"} className="link-underline-primary me-4">
+                                <h5 className="text-primary">{jobData.applicationData.applicant.name}</h5>
+                            </Link>
+                        
+                            <p>{jobData.applicationData.coverletter}</p>
                         </div>
                     </div>
                     </div>
