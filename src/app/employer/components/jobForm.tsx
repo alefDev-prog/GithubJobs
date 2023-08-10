@@ -1,15 +1,18 @@
 "use client";
 
 import { collection, doc, setDoc, serverTimestamp} from "firebase/firestore";
-import { FormEvent, Key, useRef, useState } from "react";
+import { FormEvent, Key,  useRef, useState } from "react";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/AuthContext";
 import { repoInfo } from "@/interfaces/interface";
 import Repo from "./repo";
 
 
-export default function JobForm({repos}: {repos: repoInfo[]}) {
 
+
+export default function JobForm({repos, githubURL}: {repos: repoInfo[], githubURL: string}) {
+   
+     
 
     const [currentRepo, setCurrentRepo] = useState<repoInfo>()
     const title = useRef<HTMLInputElement|null>(null);
@@ -20,12 +23,13 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
 
     
     const currentUser = useAuth();
-
+ 
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         if(!currentRepo || !currentUser) return;
+        
         
     
         
@@ -37,10 +41,12 @@ export default function JobForm({repos}: {repos: repoInfo[]}) {
             stargazers_count: currentRepo.stargazers_count
         }
 
+        
         const userInfo = {
             name: currentUser.displayName || currentUser.providerData[0].displayName,
             image: currentUser.photoURL,
-            userId: currentUser.uid
+            userId: currentUser.uid,
+            githubURL: githubURL
         }
 
 
