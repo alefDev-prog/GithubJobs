@@ -9,6 +9,54 @@ export default async function Navbar() {
   const cookieStore = cookies()
   const userCookie = cookieStore.get('userData')?.value as string;
   
+  //this it to prevent error with JSON.parse
+  if(userCookie === "undefined" || userCookie === undefined) {
+    return (
+      <nav className="navbar navbar-light bg-light">
+      <div className="container-fluid">
+        <a className="navbar-brand mt-2 mt-lg-0" href="#">
+          {/* Room for logo */}
+        </a>
+        <ul className="navbar-nav me-auto mb-2 mb-lg-0" style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+          <li className="nav-item">
+            <Link className="nav-link" href="/employer">Offer jobs</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" href="/coder">Explore</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" href="/conversations">Conversations</Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    )
+  }
+  
+  //this it to prevent error with JSON.parse
+  if(userCookie === "undefined") {
+    return (
+      <nav className="navbar navbar-light bg-light">
+      <div className="container-fluid">
+        <a className="navbar-brand mt-2 mt-lg-0" href="#">
+          {/* Room for logo */}
+        </a>
+        <ul className="navbar-nav me-auto mb-2 mb-lg-0" style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+          <li className="nav-item">
+            <Link className="nav-link" href="/employer">Offer jobs</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" href="/coder">Explore</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" href="/conversations">Conversations</Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    )
+  }
+  
   const userData = JSON.parse(userCookie);
   const userImage = userData.image;
   const userName = userData.name;
