@@ -1,6 +1,7 @@
 import { repoInfo } from "@/interfaces/interface";
 import fetchRepositories from "./utils/fetchRepos";
 import JobForm from "./components/jobForm";
+import getCookieData from "@/globalUtils/getCookieData";
 
 export default async function Employer() {
     
@@ -8,15 +9,16 @@ export default async function Employer() {
 
 
     const repos = await fetchRepositories();
-   
+    
     
    if(repos) {
+    const githubURL = getCookieData().url; 
         return (
             <main className="container-xl">
                 <div className="row">
             
         
-                    <JobForm repos={repos} />
+                    <JobForm repos={repos} githubURL={githubURL}/>
                 </div>
             </main>
         )
