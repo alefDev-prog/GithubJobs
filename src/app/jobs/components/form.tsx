@@ -4,7 +4,7 @@ import { db } from "@/firebase/config";
 import { jobInfo } from "@/interfaces/interface";
 import { arrayUnion, collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { useRef} from "react";
-export default function Form({currentJob}: {currentJob: jobInfo}) {
+export default function Form({currentJob, githubURL}: {currentJob: jobInfo, githubURL: string}) {
 
 const letter = useRef<HTMLTextAreaElement | null>(null);
 
@@ -45,6 +45,7 @@ const letter = useRef<HTMLTextAreaElement | null>(null);
                 name: currentUser.displayName || currentUser.providerData[0].displayName,
                 image: currentUser.photoURL,
                 id: currentUser.uid,
+                githubURL: githubURL
             },
             coverletter: letter.current?.value,
             id: jobDoc.id
