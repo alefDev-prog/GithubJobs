@@ -3,8 +3,12 @@ import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { jobInfo } from "@/interfaces/interface";
 import { arrayUnion, collection, doc, setDoc, updateDoc } from "firebase/firestore";
+import Link from "next/link";
 import { useRef} from "react";
-export default function Form({currentJob}: {currentJob: jobInfo}) {
+import Image from "next/image";
+
+
+export default function Form({currentJob, githubURL}: {currentJob: jobInfo, githubURL: string}) {
 
 const letter = useRef<HTMLTextAreaElement | null>(null);
 
@@ -45,6 +49,7 @@ const letter = useRef<HTMLTextAreaElement | null>(null);
                 name: currentUser.displayName || currentUser.providerData[0].displayName,
                 image: currentUser.photoURL,
                 id: currentUser.uid,
+                githubURL: githubURL
             },
             coverletter: letter.current?.value,
             id: jobDoc.id
@@ -90,25 +95,40 @@ const letter = useRef<HTMLTextAreaElement | null>(null);
     }
 
   
-  return (
-    <div className="container mt-4">
-    {currentJob ? (
-      <div className="card p-4 bg-light">
-        <h1 className="display-4">{currentJob.title}</h1>
-        <p className="lead">{currentJob.description}</p>
-        <ul className="list-unstyled">
-          <li>Period: {currentJob.period}</li>
-          <li>Payment: {currentJob.payment}</li>
-          <li>Salary: ${currentJob.salary}</li>
-        </ul>
-        <textarea className="form-control mb-3" rows={5} placeholder="Write your cover letter" ref={letter}></textarea>
-        <button onClick={handleSubmit} className="btn btn-success" style={{ backgroundColor: "#14A100" }}>Submit</button>
+   
+    
+    
+    return (
+      <div className="container mt-4">
+        {currentJob ? (
+          <div className="card p-4 bg-secondary">
+            <div className="d-flex justify-content-between align-items-center">
+              <h1 className="text-primary">{currentJob.title}</h1>
+              <div className="d-flex align-items-center" style={{marginTop: "-30px"}}>
+                <Link href={currentJob.publisher.githubURL || '#'}  className="link-underline-primary me-4">
+                  <h4 className="text-primary">{currentJob.publisher.name}</h4>
+                </Link>
+
+                <Image src={currentJob.publisher.image} alt={currentJob.publisher.name} className="rounded-circle mr-2" width={50} height={50} />
+                
+              </div>
+            </div>
+            <p className="lead">{currentJob.description}</p>
+            <ul className="list-unstyled">
+              <li>Period: {currentJob.period}</li>
+              <li>Payment: {currentJob.payment}</li>
+              <li>Salary: ${currentJob.salary}</li>
+            </ul>
+            <textarea className="form-control mb-3" rows={5} placeholder="Write your cover letter" ref={letter}></textarea>
+            <button onClick={handleSubmit} className="btn btn-primary text-white">Submit</button>
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
-    ) : (
-      <p>Loading...</p>
-    )}
-  </div>
-  )
+    )
+    
+    
 
 
 }

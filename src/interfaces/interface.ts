@@ -22,7 +22,8 @@ export interface jobInfo {
     publisher: {
         name: string,
         image: string,
-        userId: string
+        userId: string,
+        githubURL?: string
     };
     
     repository: {
@@ -47,7 +48,8 @@ export interface applicationData {
     applicant: {
         id: string,
         image: string,
-        name: string
+        name: string,
+        githubURL?:string,
     },
     coverletter: string,
     id: string,
@@ -64,7 +66,8 @@ export interface requestObject {
         publisher: {
             name: string,
             image: string,
-            userId: string
+            userId: string,
+            githubURL?: string
         };
         
         repository: {
@@ -83,7 +86,8 @@ export interface requestObject {
         applicant: {
             id: string,
             image: string,
-            name: string
+            name: string,
+            githubURL?:string,
         },
         coverletter: string,
         jobId: string,
@@ -161,7 +165,8 @@ export interface userData {
         publisher: {
             name: string,
             image: string,
-            userId: string
+            userId: string,
+            githubURL?: string
         };
         
         repository: {
@@ -176,4 +181,10 @@ export interface userData {
         title: string;
         id: string
     }
+}
+
+export interface userCookieData {
+    name:string,
+    image:string,
+    url: string,
 }
