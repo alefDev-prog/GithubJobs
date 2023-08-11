@@ -1,40 +1,16 @@
-"use client";
 
-import { useAuth } from "@/context/AuthContext";
-import { db } from "@/firebase/config";
-import { userChat } from "@/interfaces/interface";
-import { collection, doc, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+
 import Conversation from "./components/conversation";
+import getConverations from "./utils/getConversations";
 
 
-export default function Conversations() {
+export default async function Conversations() {
 
-    const userId = useAuth()?.uid;
     
-    const [conversations, setConversations] = useState<userChat[]>();
+    const conversations = await getConverations();
+    if(conversations instanceof Error) return <h1>Error</h1>
 
-
-    useEffect(() => {
-       
-
-            async function getData() {
-                if(userId) {
-                    const userRef = doc(db, "users", userId);
-                    const conversationCollection = collection(userRef, "userChats");
-                    const conversationSnap = await getDocs(conversationCollection);
-                    const conversationList = conversationSnap.docs.map(doc => doc.data() as userChat);
-                    setConversations(conversationList)
-                }
-            }
-
-            getData();
-            
-    
-    }, [userId]);
-
-
-    if(conversations) {
+   
         return (
         
             <div className="container">
@@ -44,13 +20,10 @@ export default function Conversations() {
                         <Conversation conversation={conversation} key={conversation.chatId}/>
                     ))}
                 </div>
-                </div>
+            </div>
         
         )
-    }
+    
 
-    else return (
-        <h1>Loading...</h1>
-    )
    
 }
