@@ -2,7 +2,7 @@
 
 import { db } from "@/firebase/config";
 import { applicationData, jobInfo } from "@/interfaces/interface";
-import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 export default function Assign({jobData}: {jobData: {jobInfo: jobInfo, applicationData: applicationData}}){
@@ -26,7 +26,8 @@ export default function Assign({jobData}: {jobData: {jobInfo: jobInfo, applicati
                 publisher: jobData.jobInfo.publisher
             },
             viewed: false,
-            id: applicantDoc.id
+            id: applicantDoc.id,
+            createdAt: serverTimestamp()
         }
         await Promise.all(
             [

@@ -2,7 +2,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { jobInfo } from "@/interfaces/interface";
-import { arrayUnion, collection, doc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { useRef} from "react";
 export default function Form({currentJob}: {currentJob: jobInfo}) {
 
@@ -72,7 +72,8 @@ const letter = useRef<HTMLTextAreaElement | null>(null);
                     },
                     viewed: false,
                     id: messagesDoc.id,
-                    applicationId: jobDoc.id
+                    applicationId: jobDoc.id,
+                    createdAt: serverTimestamp()
         
                 }
 
