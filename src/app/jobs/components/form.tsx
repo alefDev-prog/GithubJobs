@@ -2,7 +2,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/firebase/config";
 import { jobInfo } from "@/interfaces/interface";
-import { arrayUnion, collection, doc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useRef} from "react";
 import Image from "next/image";
@@ -77,7 +77,8 @@ const letter = useRef<HTMLTextAreaElement | null>(null);
                     },
                     viewed: false,
                     id: messagesDoc.id,
-                    applicationId: jobDoc.id
+                    applicationId: jobDoc.id,
+                    createdAt: serverTimestamp()
         
                 }
 

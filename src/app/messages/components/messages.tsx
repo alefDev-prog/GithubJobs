@@ -6,7 +6,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 
-export default function Message({message}: {message:any}) {
+export default function Message({message, key}: {message:any, key:number}) {
 
   const currentUser = useAuth();
   const {push} = useRouter();
@@ -30,7 +30,7 @@ export default function Message({message}: {message:any}) {
   return (
       <div
           className={`card mb-3 ${message.viewed ? 'viewed' : 'bg-info-subtle'}`}
-          onClick={handleClick}>
+          onClick={handleClick} key={key}>
             {message.type === "Application" && 
             <div className="card-body">
               <div className="row">
@@ -67,7 +67,7 @@ export default function Message({message}: {message:any}) {
               </div>
               <div className="col-md-10">
                   <>
-                    <p className="card-text-body-emphasis">You have been assigned <p className="text-primary">{message.job.title}</p></p>
+                    <p className="card-text-body-emphasis">You have been assigned: <strong className="text-primary">{message.job.title}</strong></p>
                   </>
               </div>
             </div>
