@@ -24,7 +24,7 @@ export default function CurrentJob({jobs}: {jobs: jobInfo[]}) {
   {items.map((job: jobInfo, index:number) => (
     <div key={index} className="card mt-3">
         <div className="card-body">
-        <h5 className="card-title text-primary">{job.title}</h5>
+        <Link href={{pathname:"/activeJob", query:{ jobId: job.id}}} className="link-underline-primary"><h5 className="card-title text-primary">{job.title}</h5></Link>
         <p className="card-text">Period: {job.period}</p>
         <p className="card-text">Salary: {job.salary}</p>
         <p className="card-text">Publisher: {job.publisher.name}</p>
