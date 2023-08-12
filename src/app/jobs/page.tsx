@@ -11,8 +11,9 @@ export default async function Job({searchParams}: {searchParams?: { [key: string
   
   const jobId = searchParams?.id as string;
 
-  const job = await getJob(jobId);
-  if (job instanceof Error) return <h1>Error</h1>
+  const jobData = await getJob(jobId);
+  if(jobData instanceof Error) return <h1>Error</h1>
+  const job = jobData.job;
 
 
   const githubURL = getCookieData().url as string;

@@ -127,8 +127,8 @@ export default function JobForm({repos, githubURL}: {repos: repoInfo[], githubUR
             <div className="form-group">
                 <label>Payment</label>
                 <select className="form-control rounded" ref={payment}>
-                    <option>Fixed price</option>
-                    <option>Per milestone</option>
+                    <option>One-time payment</option>
+                    <option disabled>Per milestone</option>
                 </select>
             </div>
             <div className="form-group">
