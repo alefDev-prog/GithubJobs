@@ -21,10 +21,9 @@ export default async function Request({searchParams}: {searchParams?: { [key: st
     //Main source of information
     let jobData = {} as {jobInfo: jobInfo, applicationData: applicationData};
 
-    const jobInfo = await getJob(jobId);
-    if(jobInfo instanceof Error) {
-        return <h1>Error</h1>
-    }
+    const jobResp = await getJob(jobId);
+    if(jobResp instanceof Error) return <h1>Error</h1>
+    const jobInfo = jobResp.job;
 
     //filter to get to the correct application 
     let applicationData = {} as  applicationData;

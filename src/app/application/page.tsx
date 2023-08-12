@@ -9,8 +9,9 @@ export default async function Application({searchParams}: {searchParams?: { [key
     const jobId = searchParams?.jobId as string;
     const appId = searchParams?.appId as string;
 
-    const job = await getJob(jobId);
-    if(job instanceof Error) return <h1>Error</h1>
+    const jobData = await getJob(jobId);
+    if(jobData instanceof Error) return <h1>Error</h1>
+    const job = jobData.job;
 
     let application = {} as applicationData;
 
