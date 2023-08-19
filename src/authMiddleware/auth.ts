@@ -3,7 +3,7 @@ import { auth } from "firebase-admin";
 import { cookies } from "next/headers";
 
 
-export default async function verifyAuth() {
+export default async function verifyAuth(): Promise<string|Error> {
   if(adminSDK.apps.length === 0) {
     adminSDK.initializeApp();
   }
@@ -22,7 +22,7 @@ export default async function verifyAuth() {
     }
     return uid;
   } catch(err) {
-    return err;
+    return new Error("some error occured")
   }
  
   
