@@ -7,7 +7,7 @@ const nextConfig = {
             hostname: 'avatars.githubusercontent.com',
           },
         ],
-      },
+      }
 }
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

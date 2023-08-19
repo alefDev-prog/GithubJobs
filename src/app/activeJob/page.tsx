@@ -1,16 +1,18 @@
 import getChatId from "@/globalUtils/getChatId";
-import getJob_Octokit from "@/globalUtils/getJob&Octokit";
 import Link from "next/link";
+import ClientInteractions from "./components/clientSide";
+import getJob from "@/globalUtils/getJob";
 
 export default async function activeJob({searchParams}: {searchParams?: { [key: string]: string | string[] | undefined}}) {
     
     
     const jobId = searchParams?.jobId as string
     
-    const jobData = await getJob_Octokit(jobId);
+    const jobData = await getJob(jobId);
     if(jobData instanceof Error) return <h1>Error</h1>
-    const job = jobData.job;
-    const userId = jobData.userId;
+    const {job, userId} = jobData;
+
+
     const chatId = getChatId(userId, job.publisher.userId);
 
 
@@ -59,6 +61,7 @@ export default async function activeJob({searchParams}: {searchParams?: { [key: 
               </div>
             </div>
           </div>
+          <ClientInteractions jobData={jobData} />
         </div>
     )
     
