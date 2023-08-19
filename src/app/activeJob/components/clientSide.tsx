@@ -13,6 +13,7 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
             headers: {
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify(job)
         });
         const resp = await forkAction.json();
         console.log(resp);
