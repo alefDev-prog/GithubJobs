@@ -1,3 +1,4 @@
+import getChatId from "@/globalUtils/getChatId";
 import getJob from "@/globalUtils/getJob";
 import Link from "next/link";
 
@@ -11,6 +12,9 @@ export default async function activeJob({searchParams}: {searchParams?: { [key: 
     if(jobData instanceof Error) return <h1>Error</h1>
     const job = jobData.job;
     const userId = jobData.userId;
+
+
+    const chatId = getChatId(userId, job.publisher.userId);
 
     return (
         <div className="container mt-5">
@@ -29,9 +33,17 @@ export default async function activeJob({searchParams}: {searchParams?: { [key: 
               <ul className="list-group">
                 <li className="list-group-item">Payment: {job.payment}</li>
                 <li className="list-group-item">Period: {job.period}</li>
-                <li className="list-group-item">Salary: ${job.salary}</li>
-               
+                <li className="list-group-item">Salary: ${job.salary}</li> 
+                <div>
+
+                  <Link href={`/chat?chatid=${chatId}`} >
+                    <button className="btn-primary text-white btn rounded-0 rounded-bottom-2">Chat with employer</button>
+                  </Link>
+                    
+                </div>  
               </ul>
+         
+             
               
             </div>
             <div className="col-6">

@@ -3,6 +3,7 @@ import { db } from "@/firebase/config";
 
 import { applicationData, jobInfo } from "@/interfaces/interface";
 import { arrayRemove, arrayUnion, collection, doc, getDoc,setDoc, updateDoc } from "firebase/firestore";
+import getChatId from "./getChatId";
 
 
 
@@ -11,12 +12,11 @@ export default async function interview(jobData: {jobInfo: jobInfo, applicationD
     //const currentUser = useAuth();
     const applicantId = jobData?.applicationData.applicant.id;
     const userId: string|undefined = currentUser?.uid;
-    let combinedId = "";
 
     if(userId && applicantId) {
-        combinedId = userId > applicantId
-        ? userId + applicantId
-        : applicantId + userId
+
+        const combinedId = getChatId(userId, applicantId)
+       
 
 
         try {
