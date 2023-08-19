@@ -1,5 +1,5 @@
 import getChatId from "@/globalUtils/getChatId";
-import getJob from "@/globalUtils/getJob";
+import getJob_Octokit from "@/globalUtils/getJob&Octokit";
 import Link from "next/link";
 
 export default async function activeJob({searchParams}: {searchParams?: { [key: string]: string | string[] | undefined}}) {
@@ -7,14 +7,15 @@ export default async function activeJob({searchParams}: {searchParams?: { [key: 
     
     const jobId = searchParams?.jobId as string
     
-    const jobData = await getJob(jobId);
-    console.log(jobData)
+    const jobData = await getJob_Octokit(jobId);
     if(jobData instanceof Error) return <h1>Error</h1>
     const job = jobData.job;
     const userId = jobData.userId;
-
-
     const chatId = getChatId(userId, job.publisher.userId);
+
+
+    
+
 
     return (
         <div className="container mt-5">
