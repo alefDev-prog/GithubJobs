@@ -12,6 +12,9 @@ export const useLogin = () => {
   const [error, setError] = useState<null | string>(null);
   const [isPending, setIsPending] = useState(false);
   const provider = new GithubAuthProvider();
+  provider.addScope('repo');
+
+  
 
 
   const login = async () => {
