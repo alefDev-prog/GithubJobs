@@ -2,10 +2,16 @@
 
 import { jobInfo } from "@/interfaces/interface";
 import { Octokit } from "@octokit/rest";
+import { useState } from "react";
 
 export default function ClientInteractions({jobData}: {jobData: {userId: string, job: jobInfo}}) {
 
+
+    
     const { job, userId} = jobData;
+
+
+    const [forked, setForked] = useState(job.assignee?.forked)
 
     async function fork() {
         const forkAction = await fetch("/api/fork", {
@@ -15,11 +21,12 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
             },
             body: JSON.stringify(job)
         });
-        const resp = await forkAction.json();
-        console.log(resp);
+        if(forkAction.ok) {
+            setForked(true);
+        }
     }
 
-    if(job.assignee?.forked === true) {
+    if(forked === true) {
         return <h1>It is forked</h1>
     } 
     else return (

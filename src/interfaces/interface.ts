@@ -18,6 +18,7 @@ export interface jobInfo {
         name:string,
         image:string,
         id: string,
+        forked?: boolean,
     };
     publisher: {
         name: string,

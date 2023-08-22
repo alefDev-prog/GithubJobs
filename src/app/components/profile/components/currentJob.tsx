@@ -15,7 +15,7 @@ export default function CurrentJob({jobs}: {jobs: jobInfo[]}) {
    
     if(items.length === 0) {
         return (
-            <p className="mt-3">You have not published any jobs</p>
+            <p className="mt-3">You are not assigned to any jobs</p>
         )
     }
 
