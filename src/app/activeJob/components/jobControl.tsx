@@ -26,14 +26,13 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
         }
     }
 
-    if(forked === true) {
-        return <h1>It is forked</h1>
-    } 
-    else return (
-        <>
-            <h1>Not forked</h1>
-            <button onClick={fork}>Fork</button>
-        </>
+    return (
+        <div className="d-flex justify-content-center align-items-center" style={{marginTop: '50px'}}>
+        {!forked && 
+            <button className="btn btn-primary btn-lg mr-3 text-white" onClick={fork}>Fork</button>
+        }
+        <button className="btn btn-primary btn-lg text-white">Request review</button>
+    </div>
         
     )
 
