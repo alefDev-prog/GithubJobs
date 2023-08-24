@@ -1,7 +1,8 @@
 import getChatId from "@/globalUtils/getChatId";
 import Link from "next/link";
-import ClientInteractions from "./components/clientSide";
+import ClientInteractions from "./components/jobControl";
 import getJob from "@/globalUtils/getJob";
+import Fork from "./components/fork";
 
 export default async function activeJob({searchParams}: {searchParams?: { [key: string]: string | string[] | undefined}}) {
     
@@ -51,7 +52,8 @@ export default async function activeJob({searchParams}: {searchParams?: { [key: 
             </div>
             <div className="col-6">
               <div className="card">
-                <div className="card-body">
+                <div className="card-body position-relative">
+                  <Fork jobData={jobData} />
                   <h5 className="card-title">Repository Info</h5>
                   <p className="card-text">Name: {job.repository.name}</p>
                   <p className="card-text">Language: {job.repository.language}</p>
