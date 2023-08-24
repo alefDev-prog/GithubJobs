@@ -11,28 +11,23 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
     const { job, userId} = jobData;
 
 
-    const [forked, setForked] = useState(job.assignee?.forked)
 
-    async function fork() {
-        const forkAction = await fetch("/api/fork", {
+    async function checkPR() {
+        const forkAction = await fetch("/api/checkPR", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(job)
         });
-        if(forkAction.ok) {
-            setForked(true);
-        }
+        const data = await forkAction.json();
+        console.log(data);
     }
 
     return (
         <div className="d-flex justify-content-center align-items-center" style={{marginTop: '50px'}}>
-        {!forked && 
-            <button className="btn btn-primary btn-lg mr-3 text-white" onClick={fork}>Fork</button>
-        }
-        <button className="btn btn-primary btn-lg text-white">Request review</button>
-    </div>
+            <button className="btn btn-primary btn-lg text-white" onClick={checkPR}>Request review</button>
+        </div>
         
     )
 
