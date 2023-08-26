@@ -1,20 +1,31 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
+import { db } from "@/firebase/config";
 import { jobInfo } from "@/interfaces/interface";
+import { collection, doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useState } from "react";
+import SubmitToast from "./submitToast";
 
 export default function ClientInteractions({jobData}: {jobData: {userId: string, job: jobInfo}}) {
 
 
     
     const { job, userId} = jobData;
+    const currentUser = useAuth();
 
     const [showModal, setShowModal] = useState(false);
-    const [currentPR, setCurrentPR] = useState<any>({});
+    const [currentPR, setCurrentPR] = useState<any>();
+    const [showToast, setShowToast] = useState(false);
 
     function toggleModal() {
         setShowModal(!showModal);
+    }
+
+    function handleToast() {
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
     }
 
     async function checkPR() {
@@ -28,7 +39,56 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
         const data = await forkAction.json();
         setCurrentPR(data);
         toggleModal();
-        console.log(data);
+    }
+
+
+    async function handleSubmitWork() {
+        if(currentUser && currentPR) {
+            const uid = currentUser.uid;
+            const jobRef = doc(db, "users", job.publisher.userId , "userJobs", job.id);
+            const userRef = doc(db, "users", job.publisher.userId);
+            const messageRef = collection(userRef, "messages");
+
+
+            const submittedWork = {
+                type: "PR",
+                PR_title: currentPR.title,
+                PR_url: currentPR._links.html.href,
+            }
+            
+            //updating job document
+            const updateJob = updateDoc(jobRef, {
+                inReview: true,
+                'assignee.submittedWork': submittedWork
+            });
+
+            //sending message to employer
+            const messageData = {
+                type: "submittedWork",
+                submittedWork,
+                job: {
+                    title: job.title,
+                    id: job.id,
+                },
+                employee: {
+                    id: uid,
+                    name: currentUser.providerData[0].displayName || currentUser.displayName,
+                    image: currentUser.photoURL
+                },
+                viewed: false,
+                createdAt: serverTimestamp(),
+
+            }
+            const setMessage =  setDoc(doc(messageRef), messageData);
+
+
+            //avoiding waterfalls
+            await Promise.all([updateJob, setMessage]);
+        }
+
+        toggleModal();
+        handleToast();
+
     }
 
     return (
@@ -36,6 +96,8 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
         <div className="d-flex justify-content-center align-items-center" style={{marginTop: '50px'}}>
             <button className="btn btn-primary btn-lg text-white" onClick={checkPR}>Submit work</button>
         </div>
+
+        {showToast && <SubmitToast />}
         
         
         {showModal && (
@@ -77,7 +139,7 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
 
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" onClick={toggleModal}>Cancel</button>
-                                        <button type="button" className="btn btn-primary text-white">Submit</button>
+                                        <button type="button" className="btn btn-primary text-white" onClick={handleSubmitWork}>Submit</button>
                                     </div>
                                 </>
                                     

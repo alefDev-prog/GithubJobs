@@ -14,11 +14,17 @@ export interface jobInfo {
     payment: string;
     period: string;
     applications: applicationData[];
+    inReview?: boolean,
     assignee?: {
         name:string,
         image:string,
         id: string,
         forked?: boolean,
+        submittedWork?: {
+            type: string,
+            PR_title: string,
+            PR_url: string
+        }
     };
     publisher: {
         name: string,
