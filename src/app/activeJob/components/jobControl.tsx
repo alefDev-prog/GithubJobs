@@ -18,6 +18,7 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
     const [showModal, setShowModal] = useState(false);
     const [currentPR, setCurrentPR] = useState<any>();
     const [showToast, setShowToast] = useState(false);
+    const [inReview, setInReview] = useState(job.inReview);
 
     function toggleModal() {
         setShowModal(!showModal);
@@ -87,14 +88,21 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
         }
 
         toggleModal();
+        setInReview(true);
         handleToast();
+    
 
     }
 
     return (
         <>
         <div className="d-flex justify-content-center align-items-center" style={{marginTop: '50px'}}>
+        {
+        inReview ? 
+            <button className="btn btn-primary btn-lg text-white" disabled onClick={checkPR}>Your work is in review</button>
+        :
             <button className="btn btn-primary btn-lg text-white" onClick={checkPR}>Submit work</button>
+        }
         </div>
 
         {showToast && <SubmitToast />}
