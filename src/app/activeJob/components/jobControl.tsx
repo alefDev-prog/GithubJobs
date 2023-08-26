@@ -124,7 +124,7 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
                                         <button type="button" className="btn-close" onClick={toggleModal}></button>
                                     </div>
                                     <div className="modal-body">
-                                        <p>In order to request a review of your work, you have to submit a pull request to your employer's repository on Github</p>
+                                        <p>In order to request a review of your work, you have to submit a pull request to your employer&apos;s repository on Github</p>
                                     </div>
                                 </>
 
