@@ -2,6 +2,7 @@ import getJob from "@/globalUtils/getJob";
 import Image from "next/image";
 import Link from "next/link";
 import Remove from "./components/remove";
+import JobControl from "./components/jobControl";
 
 export default async function Job({searchParams}: {searchParams?: { [key: string]: string | string[] | undefined}}) {
     
@@ -48,6 +49,7 @@ export default async function Job({searchParams}: {searchParams?: { [key: string
           </div>
 
 
+          {job.inReview && <JobControl job={job} /> }
           {
           job.assignee === null? 
             <div className="row mt-5">

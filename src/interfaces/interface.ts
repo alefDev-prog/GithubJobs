@@ -195,3 +195,9 @@ export interface userCookieData {
     image:string,
     url: string,
 }
+
+export interface submittedWork {
+    type: string;
+    PR_title: string;
+    PR_url: string;
+}
