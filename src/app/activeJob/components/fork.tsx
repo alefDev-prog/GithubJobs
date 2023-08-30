@@ -31,11 +31,7 @@ export default function Fork({jobData}: {jobData: {userId: string, job: jobInfo}
         }
     }
 
-    function test() {
-        setForked(true)
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
-    }
+
 
     return (
         <>
