@@ -10,10 +10,7 @@ export default function ApproveModal({state, dispatch}: {state: jobControlState,
  
     function handleClose() {
         dispatch({type: actionKind.CLOSE_APPROVE_MODAL});
-    }
-
-    if(!state.showApproveModal) {
-        return <></>
+        
     }
 
     return (
@@ -25,15 +22,15 @@ export default function ApproveModal({state, dispatch}: {state: jobControlState,
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title">Confirm Delete</h5>
+                            <h5 className="modal-title">Approve</h5>
                             <button type="button" className="btn-close" onClick={handleClose}></button>
                         </div>
                         <div className="modal-body">
-                            <p>Are you sure you want to delete this job?</p>
+                            <p>An approval of the work would result in the job being terminated.</p>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={handleClose}>Cancel</button>
-                            <button type="button" className="btn btn-danger text-white">Delete</button>
+                            <button type="button" className="btn btn-primary text-white">Approve</button>
                         </div>
                     </div>
                 </div>

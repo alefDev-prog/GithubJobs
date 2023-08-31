@@ -20,7 +20,9 @@ export default function JobControl({job}: {job: jobInfo}) {
     }
 
     async function requestChange () {
+        console.log("here")
         dispatch({type: actionKind.OPEN_REQUEST_MODAL});
+        console.log(state.showRequestModal)
     }
 
     return (
@@ -41,8 +43,15 @@ export default function JobControl({job}: {job: jobInfo}) {
                     </div>
                 </div>
             </div>
+            {state.showApproveModal ?
             <ApproveModal state={state} dispatch={dispatch}/>
-            <RequestModal state={state} dispatch={dispatch} />
+            : state.showRequestModal ?
+            <RequestModal state={state} dispatch={dispatch} /> 
+            : 
+            <></>
+            }
+            
+           
        </> 
 
 

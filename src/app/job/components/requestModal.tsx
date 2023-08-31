@@ -9,11 +9,8 @@ export default function RequestModal({state, dispatch}: {state: jobControlState,
     
  
     function handleClose() {
+        console.log("here");
         dispatch({type: actionKind.CLOSE_REQUEST_MODAL});
-    }
-
-    if(!state.showApproveModal) {
-        return <></>
     }
 
     return (
@@ -25,7 +22,7 @@ export default function RequestModal({state, dispatch}: {state: jobControlState,
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title">Confirm Delete</h5>
+                            <h5 className="modal-title">Request changes</h5>
                             <button type="button" className="btn-close" onClick={handleClose}></button>
                         </div>
                         <div className="modal-body">
