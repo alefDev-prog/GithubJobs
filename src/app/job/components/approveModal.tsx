@@ -2,15 +2,57 @@
 
 import { Dispatch, useReducer } from "react";
 import { actionKind, initialValues, jobControlAction, jobControlState, reducer } from "./reducer/reducer";
+import { useAuth } from "@/context/AuthContext";
+import { collection, deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
+import { jobInfo } from "@/interfaces/interface";
+import { useRouter } from "next/navigation";
 
 
-export default function ApproveModal({state, dispatch}: {state: jobControlState, dispatch: Dispatch<jobControlAction>}) {
+export default function ApproveModal({state, dispatch, job}: {state: jobControlState, dispatch: Dispatch<jobControlAction>, job: jobInfo}) {
 
-    
+    const currentUser = useAuth();
+    const {push} = useRouter();
  
     function handleClose() {
         dispatch({type: actionKind.CLOSE_APPROVE_MODAL});
-        
+    }
+
+    async function approve() {
+        if(currentUser && job.assignee) {
+            
+            const assigneeRef = doc(db, "users", job.assignee?.id);
+            const messageRef = collection(assigneeRef, "messages");
+
+
+
+            //deleting job and sending message to employee
+            const messageContent = {
+                type: "work_approved",
+                job: {
+                    title: job.title,
+                    id: job.id,
+                    publisher: job.publisher
+                },
+                viewed: false,
+                createdAt: serverTimestamp()
+            }
+
+            try {
+                const deleting = deleteDoc(doc(db, "users", currentUser.uid, "userJobs", job.id))
+                const sendingMess = setDoc(doc(messageRef), messageContent);
+    
+                await Promise.all([deleting, sendingMess]);
+
+                push("/");
+
+            } catch(error) {
+                console.log(error);
+            }
+            
+
+
+        }
     }
 
     return (
@@ -30,7 +72,7 @@ export default function ApproveModal({state, dispatch}: {state: jobControlState,
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={handleClose}>Cancel</button>
-                            <button type="button" className="btn btn-primary text-white">Approve</button>
+                            <button type="button" className="btn btn-primary text-white" onClick={approve}>Approve</button>
                         </div>
                     </div>
                 </div>
