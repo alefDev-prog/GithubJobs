@@ -95,6 +95,49 @@ export default function Message({message, key}: {message:any, key:number}) {
               </div>
             </div>
           }
+
+          {message.type === "work_approved" &&
+            <div className="card-body">
+              <div className="row">
+                <div className="col-md-2">
+                  <Image
+                    src={message.job.publisher.image}
+                    alt="employee image"
+                    className="img-fluid rounded-circle"
+                    height={100}
+                    width={100}
+                  />
+                </div>
+                <div className="col-md-10">
+                    <>
+                      <p className="card-text-body-emphasis">Your work for <strong className="text-primary">{message.job.title}</strong> has been approved!</p>
+                    </>
+                </div>
+              </div>
+            </div>
+          }
+
+
+          {message.type === "changes_requested" &&
+            <div className="card-body">
+              <div className="row">
+                <div className="col-md-2">
+                  <Image
+                    src={message.job.publisher.image}
+                    alt="employee image"
+                    className="img-fluid rounded-circle"
+                    height={100}
+                    width={100}
+                  />
+                </div>
+                <div className="col-md-10">
+                    <>
+                      <p className="card-text-body-emphasis">Changes have been requested for your work at <strong className="text-primary">{message.job.title}</strong></p>
+                    </>
+                </div>
+              </div>
+            </div>
+          }
         </div>
   )
 }
