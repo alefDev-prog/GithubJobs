@@ -44,9 +44,9 @@ export default function JobControl({job}: {job: jobInfo}) {
                 </div>
             </div>
             {state.showApproveModal ?
-            <ApproveModal state={state} dispatch={dispatch}/>
+            <ApproveModal state={state} dispatch={dispatch} job={job}/>
             : state.showRequestModal ?
-            <RequestModal state={state} dispatch={dispatch} /> 
+            <RequestModal state={state} dispatch={dispatch} job={job}/> 
             : 
             <></>
             }
