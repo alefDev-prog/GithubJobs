@@ -11,6 +11,7 @@ export default function Message({message, key}: {message:any, key:number}) {
   const currentUser = useAuth();
   const {push} = useRouter();
   function handleClick() {
+    console.log(message)
    
     if(!message.viewed && currentUser?.uid) {
       const messagesRef = doc(db, "users", currentUser?.uid, "messages", message.id);
@@ -21,10 +22,21 @@ export default function Message({message, key}: {message:any, key:number}) {
     if(message.type === "Application") {
       push(`/request?id=${message.job.id}|${message.applicationId}`);
     }
-
-    if(message.type === "Assigned") {
-      
+    else if(message.type === "Assigned") {
+      push(`activeJob?jobId=${message.job.id}`)
     }
+    else if(message.type === "submittedWork") {
+      push(`job?id=${message.job.id}`)
+    }
+    else if(message.type === "work_approved") {
+      push(`/`)
+    }
+    else if(message.type === "changes_requested") {
+      push(`activeJob?jobId=${message.job.id}`)
+    }
+
+
+   
   }
   
   return (
