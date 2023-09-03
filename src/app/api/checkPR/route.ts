@@ -39,8 +39,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         //filter to the last PR from employee
         PRarr.forEach(PR => {
             if(PR.user?.login === userLoginName) latestPR = PR;
-        })
-
+        });
 
             
        return NextResponse.json(latestPR);

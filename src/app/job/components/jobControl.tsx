@@ -12,7 +12,7 @@ export default function JobControl({job}: {job: jobInfo}) {
     const submittedWork = job.assignee?.submittedWork as submittedWork;
 
     const [state, dispatch] = useReducer(reducer, initialValues);
-
+    
     
 
     async function approve() {

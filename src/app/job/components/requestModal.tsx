@@ -1,20 +1,29 @@
 "use client";
 
-import { Dispatch } from "react";
+import { Dispatch, useState } from "react";
 import { actionKind, jobControlAction, jobControlState} from "./reducer/reducer";
 import { jobInfo } from "@/interfaces/interface";
+import ErrorToast from "./errorToast";
 
 
 export default function RequestModal({state, dispatch, job}: {state: jobControlState, dispatch: Dispatch<jobControlAction>, job:jobInfo}) {
 
     
- 
+    const [showToast, setShowToast] = useState(false);
+
+    
     function handleClose() {
         console.log("here");
         dispatch({type: actionKind.CLOSE_REQUEST_MODAL});
     }
 
 
+    function handleToast() {
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+    }
+
+    
     async function handleRequest() {
         const requestAction = await fetch("/api/requestChange", {
             method: "POST",
@@ -23,9 +32,15 @@ export default function RequestModal({state, dispatch, job}: {state: jobControlS
             },
             body: JSON.stringify(job)
         });
+        const resp = await requestAction.json();
+        console.log(resp);
         if(requestAction.ok) {
-            const resp = await requestAction.json();
-            console.log(resp);
+            
+            window.location.reload();
+        }
+        else {
+
+            handleToast();
         }
 
     }
@@ -33,8 +48,10 @@ export default function RequestModal({state, dispatch, job}: {state: jobControlS
     return (
 
         <>
-            <div className="modal-backdrop fade show"></div>
 
+            {showToast && <ErrorToast />}
+            <div className="modal-backdrop fade show" style={{zIndex: 4}}></div>
+            
             <div className="modal d-block">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
