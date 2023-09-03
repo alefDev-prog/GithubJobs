@@ -2,7 +2,6 @@ import verifyAuth from "@/authMiddleware/auth";
 import { adminSDK } from "@/firebase/admin";
 import { jobInfo } from "@/interfaces/interface";
 import { Octokit } from "@octokit/rest";
-import { serverTimestamp } from "firebase/firestore";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -23,6 +22,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         auth: accessToken
     });
     const job = await req.json() as jobInfo;
+   
 
     
     try {
@@ -62,13 +62,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     submittedWork: job.assignee?.submittedWork
                 },
                 viewed: false,
-                createdAt: serverTimestamp()
+                createdAt: adminSDK.firestore.FieldValue.serverTimestamp()
         }
 
         const updateJob = docRef.update({
             inReview: false,
             "assignee.submittedWork": null
         });
+        const sendMess = messageRef.doc().set(messageContent);
+
+        await Promise.all([updateJob, sendMess]);
 
 
         return NextResponse.json(latestChangeRequest);
@@ -76,8 +79,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
         
 
     } catch(error) {
-        console.log(error);
-        return NextResponse.json({message: "Could not check PR"}, {status: 500});
+        let message:string;
+        if(error instanceof Error) message = error.message;
+        else message = "Internal error";
+        return NextResponse.json({message: message}, {status: 500});
     }
 
 }

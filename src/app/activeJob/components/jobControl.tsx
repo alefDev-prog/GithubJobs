@@ -38,6 +38,7 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
             body: JSON.stringify(job)
         });
         const data = await forkAction.json();
+        console.log(data);
         setCurrentPR(data);
         toggleModal();
     }
