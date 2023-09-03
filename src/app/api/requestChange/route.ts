@@ -2,6 +2,7 @@ import verifyAuth from "@/authMiddleware/auth";
 import { adminSDK } from "@/firebase/admin";
 import { jobInfo } from "@/interfaces/interface";
 import { Octokit } from "@octokit/rest";
+import { doc } from "firebase/firestore";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -53,6 +54,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const db = adminSDK.firestore();
         const docRef = db.collection("users").doc(auth).collection("userJobs").doc(job.id);
         const messageRef = db.collection("users").doc(job.assignee?.id as string).collection("messages");
+        const messageDoc = messageRef.doc();
         const messageContent = {
             type: "changes_requested",
                 job: {
@@ -62,14 +64,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     submittedWork: job.assignee?.submittedWork
                 },
                 viewed: false,
-                createdAt: adminSDK.firestore.FieldValue.serverTimestamp()
+                createdAt: adminSDK.firestore.FieldValue.serverTimestamp(),
+                id: messageDoc.id
         }
 
         const updateJob = docRef.update({
             inReview: false,
             "assignee.submittedWork": null
         });
-        const sendMess = messageRef.doc().set(messageContent);
+        const sendMess = messageDoc.set(messageContent);
 
         await Promise.all([updateJob, sendMess]);
 

@@ -23,6 +23,7 @@ export default function ApproveModal({state, dispatch, job}: {state: jobControlS
             
             const assigneeRef = doc(db, "users", job.assignee?.id);
             const messageRef = collection(assigneeRef, "messages");
+            const messageDoc = doc(messageRef);
 
 
 
@@ -35,12 +36,13 @@ export default function ApproveModal({state, dispatch, job}: {state: jobControlS
                     publisher: job.publisher
                 },
                 viewed: false,
-                createdAt: serverTimestamp()
+                createdAt: serverTimestamp(),
+                id: messageDoc.id
             }
 
             try {
                 const deleting = deleteDoc(doc(db, "users", currentUser.uid, "userJobs", job.id))
-                const sendingMess = setDoc(doc(messageRef), messageContent);
+                const sendingMess = setDoc(messageDoc, messageContent);
     
                 await Promise.all([deleting, sendingMess]);
 

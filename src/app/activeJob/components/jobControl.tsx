@@ -50,6 +50,7 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
             const jobRef = doc(db, "users", job.publisher.userId , "userJobs", job.id);
             const userRef = doc(db, "users", job.publisher.userId);
             const messageRef = collection(userRef, "messages");
+            const messageDoc = doc(messageRef);
 
 
             const submittedWork = {
@@ -77,11 +78,12 @@ export default function ClientInteractions({jobData}: {jobData: {userId: string,
                     name: currentUser.providerData[0].displayName || currentUser.displayName,
                     image: currentUser.photoURL
                 },
+                id: messageDoc.id,
                 viewed: false,
                 createdAt: serverTimestamp(),
 
             }
-            const setMessage =  setDoc(doc(messageRef), messageData);
+            const setMessage =  setDoc(messageDoc, messageData);
 
 
             //avoiding waterfalls
