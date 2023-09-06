@@ -2,7 +2,7 @@
 
 import { db } from "@/firebase/config";
 import { applicationData, jobInfo } from "@/interfaces/interface";
-import { collection, doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 export default function Assign({jobData}: {jobData: {jobInfo: jobInfo, applicationData: applicationData}}){
@@ -17,6 +17,9 @@ export default function Assign({jobData}: {jobData: {jobInfo: jobInfo, applicati
         const messagesRef = collection(applicantRef, "messages");
         const messagesDoc = doc(messagesRef);
         const applicantDoc = doc(currentJobsRef);
+        const applicationDoc = doc(db, "users", jobData.applicationData.applicant.id, "userApplications", jobData.applicationData.id);
+
+        
 
         const messageData = {
             type: "Assigned",
@@ -29,6 +32,15 @@ export default function Assign({jobData}: {jobData: {jobInfo: jobInfo, applicati
             id: applicantDoc.id,
             createdAt: serverTimestamp()
         }
+
+
+        /*
+        1. setting currentJob for applicant
+        2. sending message to applicant
+        3. updating job document
+        4. deleting applicant's application
+
+        */
         await Promise.all(
             [
             setDoc(applicantDoc, jobData.jobInfo),
@@ -39,7 +51,8 @@ export default function Assign({jobData}: {jobData: {jobInfo: jobInfo, applicati
                     image: jobData.applicationData.applicant.image,
                     id: jobData.applicationData.applicant.id
                 }
-            })
+            }),
+            deleteDoc(applicationDoc)
             ])
         
 
