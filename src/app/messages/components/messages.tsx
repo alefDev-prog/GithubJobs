@@ -42,7 +42,7 @@ export default function Message({message, key}: {message:any, key:number}) {
   return (
       <div
           className={`card mb-3 ${message.viewed ? 'viewed' : 'bg-info-subtle'}`}
-          onClick={handleClick} key={key}>
+          onClick={handleClick} key={key} role="button">
             {message.type === "Application" && 
             <div className="card-body">
               <div className="row">

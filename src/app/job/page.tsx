@@ -51,7 +51,7 @@ export default async function Job({searchParams}: {searchParams?: { [key: string
 
           {job.inReview && <JobControl job={job} /> }
           {
-          job.assignee === null? 
+          job.assignee === null || job.assignee === undefined? 
             <div className="row mt-5">
             <div className="col-12">
               <h2 className="text-center mb-4">Applications</h2>

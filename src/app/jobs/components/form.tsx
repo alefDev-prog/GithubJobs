@@ -6,11 +6,13 @@ import { arrayUnion, collection, doc, serverTimestamp, setDoc, updateDoc } from 
 import Link from "next/link";
 import { useRef} from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 
 export default function Form({currentJob, githubURL}: {currentJob: jobInfo, githubURL: string}) {
 
-const letter = useRef<HTMLTextAreaElement | null>(null);
+    const {push} = useRouter();
+    const letter = useRef<HTMLTextAreaElement | null>(null);
 
     const currentUser = useAuth();
     async function handleSubmit() {
@@ -89,6 +91,8 @@ const letter = useRef<HTMLTextAreaElement | null>(null);
                 ];
 
                 await Promise.all(promises);
+
+                push("/");
 
             }
             
