@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function JobItem({info}: {info:jobInfo}) {
+    if(!info) return <></>;
     return (
         <div className="card mt-3">
             <div className="m-2">
