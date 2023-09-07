@@ -7,6 +7,9 @@ export const metadata = {
   description: 'Get paid while working on github repositories',
 }
 
+//revalidating all data
+export const revalidate = 3;
+
 export default function RootLayout({
   children,
 }: {
