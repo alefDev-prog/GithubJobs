@@ -2,7 +2,6 @@ import Link from "next/link";
 import Notification from "./notifications";
 import { cookies } from 'next/headers'; // Import cookies
 import countMes from "./utils/countMessage";
-import Image from "next/image";
 
 
 export default async function Navbar() {
