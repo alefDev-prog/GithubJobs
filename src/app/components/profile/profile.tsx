@@ -9,8 +9,9 @@ import ApplicationCard from "./components/applicationcard";
 import CurrentJob from "./components/currentJob";
 
 
-export default async function Profile() {
 
+export default async function Profile() {
+   
 
     const uid = await verifyAuth();
 
@@ -75,6 +76,4 @@ export default async function Profile() {
     else return (
         <Logout />
     )
-
-    
 }

@@ -201,3 +201,10 @@ export interface submittedWork {
     PR_title: string;
     PR_url: string;
 }
+
+export interface userDataInterface {
+    userJobsData: jobInfo[],
+    userApplicationsData: userApplication[],
+    currentJobsData: jobInfo[],
+    githubData: githubData
+}
