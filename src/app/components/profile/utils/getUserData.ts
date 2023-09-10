@@ -46,6 +46,6 @@ export default async function getData(uid: string) {
 
 
     } catch(error) {
-        return error;
+        if(error instanceof Error) return new Error(error.message);
     }
 }
