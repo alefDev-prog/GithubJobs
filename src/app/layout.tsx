@@ -8,7 +8,7 @@ export const metadata = {
 }
 
 //revalidating all data
-export const revalidate = 3;
+const dynamic = 'force-dynamic'
 
 export default function RootLayout({
   children,
