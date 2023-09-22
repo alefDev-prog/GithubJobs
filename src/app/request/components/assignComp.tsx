@@ -16,7 +16,7 @@ export default function Assign({jobData}: {jobData: {jobInfo: jobInfo, applicati
         const currentJobsRef = collection(applicantRef, "currentJobs");
         const messagesRef = collection(applicantRef, "messages");
         const messagesDoc = doc(messagesRef);
-        const applicantDoc = doc(currentJobsRef);
+        const applicantDoc = doc(currentJobsRef, jobData.jobInfo.id);
         const applicationDoc = doc(db, "users", jobData.applicationData.applicant.id, "userApplications", jobData.applicationData.id);
 
         
