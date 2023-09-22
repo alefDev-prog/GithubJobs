@@ -27,7 +27,7 @@ export default function ApproveModal({state, dispatch, job}: {state: jobControlS
 
 
 
-            //deleting job and sending message to employee
+            //deleting job from employer's userJobs and employee's currentJobs and sending message to employee
             const messageContent = {
                 type: "work_approved",
                 job: {
@@ -41,10 +41,11 @@ export default function ApproveModal({state, dispatch, job}: {state: jobControlS
             }
 
             try {
-                const deleting = deleteDoc(doc(db, "users", currentUser.uid, "userJobs", job.id))
+                const deletingForEmployer = deleteDoc(doc(db, "users", currentUser.uid, "userJobs", job.id))
+                const deletingForEmployee = deleteDoc(doc(db, "users", job.assignee.id, "currentJobs", job.id))
                 const sendingMess = setDoc(messageDoc, messageContent);
     
-                await Promise.all([deleting, sendingMess]);
+                await Promise.all([deletingForEmployer, deletingForEmployee, sendingMess]);
 
                 push("/");
 
